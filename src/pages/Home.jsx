@@ -841,12 +841,13 @@ export default function Home() {
             </div>
           </div>
         </section>
+        <hr className="border-t border-[rgba(58,160,255,0.14)]" />
 
         {/* ================= TIMELINE ================= */}
         <section id="timeline" className="px-5 py-24 sm:px-8 md:px-10 md:py-36">
           <div className="mx-auto max-w-[1100px]">
             <span className="mb-4 block font-mono text-[11px] tracking-wide text-[#1c6fd1]">
-              // 03 — TRAJECTORY
+              // 03 —My  Journey
             </span>
             <h2 className="mb-6 max-w-lg text-3xl font-bold leading-tight sm:text-4xl md:text-5xl">
               My Education Journey
@@ -947,33 +948,7 @@ export default function Home() {
           </div>
         </section>
 
-      {/* ================= PROCESS ================= */}
-      <section id="process" className="px-5 py-24 sm:px-8 md:px-10 md:py-36">
-        <div className="mx-auto max-w-[1100px]">
-          <span className="mb-4 block font-mono text-[11px] tracking-wide text-[#1c6fd1]">
-              // 05 — HOW I WORK
-          </span>
-          <h2 className="mb-6 max-w-lg text-3xl font-bold leading-tight sm:text-4xl md:text-5xl">
-            Four steps, no shortcuts.
-          </h2>
-          <p className="mb-12 max-w-lg text-sm leading-7 text-[#eaf1fb]/55 sm:mb-16 sm:text-base">
-            The process doesn't change much between a small feature and a full
-            rebuild — just the scale of each step.
-          </p>
-
-          <div className="grid grid-cols-1 gap-px border border-[rgba(58,160,255,0.14)] bg-[rgba(58,160,255,0.14)] sm:grid-cols-2 lg:grid-cols-4">
-            {PROCESS_STEPS.map((step) => (
-              <div key={step.num} className="reveal bg-[#0a1224] p-6 sm:p-7">
-                <div className="mb-4 font-mono text-xl text-[#1c3f66]">
-                  {step.num}
-                </div>
-                <h4 className="mb-2 text-base font-semibold">{step.title}</h4>
-                <p className="text-sm leading-6 text-[#eaf1fb]/55">{step.body}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+     
 
       <hr className="border-t border-[rgba(58,160,255,0.14)]" />
 
@@ -1049,50 +1024,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ================= FAQ ================= */}
-      <section id="faq" className="px-5 py-24 sm:px-8 md:px-10 md:py-36">
-        <div className="mx-auto max-w-[1100px]">
-          <span className="mb-4 block font-mono text-[11px] tracking-wide text-[#1c6fd1]">
-              // 07 — FAQ
-          </span>
-          <h2 className="mb-10 max-w-lg text-3xl font-bold leading-tight sm:mb-14 sm:text-4xl md:text-5xl">
-            Questions worth answering up front.
-          </h2>
-
-          <div className="reveal-block border-t border-[rgba(58,160,255,0.14)]">
-            {FAQS.map((item, i) => {
-              const isOpen = openFaq === i;
-              return (
-                <div
-                  key={item.q}
-                  className="border-b border-[rgba(58,160,255,0.14)]"
-                >
-                  <button
-                    onClick={() => setOpenFaq(isOpen ? null : i)}
-                    className="flex w-full items-center justify-between gap-5 py-5 text-left text-sm font-medium sm:text-base"
-                  >
-                    <span>{item.q}</span>
-                    <span
-                      className="flex-shrink-0 font-mono text-lg text-[#3aa0ff] transition-transform duration-300"
-                      style={{ transform: isOpen ? "rotate(45deg)" : "none" }}
-                    >
-                      +
-                    </span>
-                  </button>
-                  <div
-                    className="overflow-hidden transition-[max-height] duration-400 ease-out"
-                    style={{ maxHeight: isOpen ? "220px" : "0px" }}
-                  >
-                    <p className="max-w-xl pb-6 text-sm leading-7 text-[#eaf1fb]/55">
-                      {item.a}
-                    </p>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      </section>
+     
 
       <hr className="border-t border-[rgba(58,160,255,0.14)]" />
 
