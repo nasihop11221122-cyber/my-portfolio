@@ -2,7 +2,7 @@ import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ArrowUpRight, ArrowUp, Mail, Terminal } from "lucide-react";
-
+import * as THREE from "three";
 gsap.registerPlugin(ScrollTrigger);
 
 /* Cut-corner "badge" shape used for the hero photo — distinct from the
@@ -26,6 +26,32 @@ const MARQUEE_ITEMS = [
   "GRAPHQL",
   "DOCKER",
 ];
+const SKILLS = [
+  {
+    title: "Thumbnail Designing",
+    image: "https://res.cloudinary.com/gp4dzet9/image/upload/v1789926486/ffaabbbf-1ba5-4194-b751-e6c74690afd0.png",
+  },
+  {
+    title: "Youtube Atomation",
+    image: "https://res.cloudinary.com/gp4dzet9/image/upload/v1789926396/5eaa007e-b880-45ee-90c2-5c42437efa13.png",
+  },
+  {
+    title: "Backend Development",
+    image: "https://res.cloudinary.com/gp4dzet9/image/upload/v1789926419/1f216569-a38d-4683-aeb0-1e0d5cb32ac7.png",
+  },
+  {
+    title: "Frontend Development",
+    image: "https://res.cloudinary.com/gp4dzet9/image/upload/v1789926462/27fd713c-a523-4348-b0b2-8013dd33d434.png",
+  },
+  {
+    title: "video Editing",
+    image: "https://res.cloudinary.com/gp4dzet9/image/upload/v1789927141/594de0e8-5f8c-4872-8fc2-3d86d72fd1da.png",
+  },
+  {
+    title: "content creation",
+    image: "https://res.cloudinary.com/gp4dzet9/image/upload/v1789927466/26116ccd-19d6-40c0-bf15-3638dee5eb2d.png",
+  },
+]; 
 
 const STATS = [
   { count: 5, suffix: "+", label: "YEARS SHIPPING" },
@@ -61,76 +87,77 @@ const SKILL_GROUPS = [
   },
 ];
 
+ 
 const TIMELINE = [
   {
-    meta: "2026 — PRESENT",
-    title: "Senior Full Stack Developer, Independent",
-    body: "Taking on select full-stack builds for startups that need product velocity without cutting corners on architecture.",
+    meta: "01 — MATRICULATION",
+    title: "Educator Public High School, Kakki",
+    body: "Scored 945/1100 marks in Matriculation.",
   },
   {
-    meta: "2023 — 2026",
-    title: "Full Stack Engineer, Product Team",
-    body: "Owned the frontend architecture for a growing SaaS product, cutting median load time by 40% and leading the migration to a component-driven design system.",
+    meta: "02 — FSC",
+    title: "Shahbudin Degree College, Bakakhel, Bannu",
+    body: "Scored 1043/1200 marks in FSc.",
   },
   {
-    meta: "2021 — 2023",
-    title: "Backend Developer",
-    body: "Built and maintained REST APIs serving over 200k monthly active users, with a focus on database performance and horizontal scaling.",
+    meta: "03 — FRONTEND WEB DEVELOPMENT",
+    title: "Sayed Software Institute, Bannu",
+    body: "Completed a course in Frontend Web Development.",
   },
   {
-    meta: "2020 — 2021",
-    title: "Junior Developer",
-    body: "Cut my teeth on internal tooling — the unglamorous work that teaches you more about real-world constraints than any tutorial does.",
+    meta: "04 — BACKEND WEB DEVELOPMENT",
+    title: "SSI, Bannu",
+    body: "Completed a course in Backend Web Development.",
+  },
+  {
+    meta: "05 — INTERNSHIP",
+    title: "Full-Stack Web Developer, Sayed Tag Companies",
+    body: "3-month internship — worked on full-stack web development.",
+  },
+  {
+    meta: "06 — BS COMPUTER SCIENCE",
+    title: "IMCB-H9, Islamabad",
+    body: "Currently studying for a BS in Computer Science.",
   },
 ];
 
 const PROJECTS = [
   {
     idx: "ENTRY_01",
-    title: "Realtime Dashboard",
+    title: "SSI bannu.com",
     summary:
-      "A live operations dashboard built for internal ops teams tracking system health across microservices.",
+      "A modern academy management software designed to manage students, courses, instructors, admissions, classes, and academic activities through a centralized and easy-to-use platform..",
     details:
-      "Built with React and WebSockets to stream live metrics without polling. Reduced incident detection time from ~8 minutes to under 30 seconds by surfacing anomalies directly in the UI instead of a separate alerting tool.",
-    tags: ["React", "WebSockets", "D3.js", "Node"],
+      "Built with React and tailwind css . Reduced incident detection time from ~8 minutes to under 30 seconds by surfacing anomalies directly in the UI instead of a separate alerting tool.",
+    tags: ["react", "MongoDB", "Node.js","tailwind css", "Express","framer motion"],
     // TODO: swap for a real screenshot of this project
-    image: "https://picsum.photos/seed/realtime-dashboard/900/600",
+    image: "https://res.cloudinary.com/gp4dzet9/image/upload/v1789913366/da8c373e-012e-4cf2-960b-cfaa3bae392d.png",
     // TODO: swap for the real live URL
-    link: "#",
+    link: "https://www.ssibannu.com/ ",
   },
   {
     idx: "ENTRY_02",
-    title: "Commerce API Layer",
+    title: "Education finder system",
     summary:
       "A headless commerce backend built to serve three different storefronts from one source of truth.",
     details:
       "Designed a GraphQL API on top of a normalized MongoDB schema, with Redis caching on hot product queries. Cut average response time by 60% under peak load during a seasonal traffic spike.",
-    tags: ["GraphQL", "MongoDB", "Redis", "Express"],
-    image: "https://picsum.photos/seed/commerce-api/900/600",
+    tags: ["react", "MongoDB", "Node.js","tailwind css", "Express","framer motion"],
+    image: "https://res.cloudinary.com/gp4dzet9/image/upload/v1789913993/4f712c70-40d8-40c3-afa4-2ad72df5ccac.png",
     link: "#",
   },
   {
     idx: "ENTRY_03",
-    title: "Design System Migration",
+    title: "Advanced attandance system",
     summary:
       "Led the migration of a legacy CSS codebase to a token-based, component-driven design system.",
     details:
       "Replaced roughly 30,000 lines of ad-hoc CSS with a shared component library, cutting new-feature styling time by half and eliminating an entire class of visual regressions across the product.",
-    tags: ["React", "Storybook", "Tailwind", "Figma Tokens"],
-    image: "https://picsum.photos/seed/design-system/900/600",
+    tags: ["react", "MongoDB", "Node.js","tailwind css", "Express","framer motion"],
+    image: "https://res.cloudinary.com/gp4dzet9/image/upload/v1789922637/d7a12d0a-e181-4d07-83ea-b097165776b3_1.png",
     link: "#",
   },
-  {
-    idx: "ENTRY_04",
-    title: "Auth & Access Rebuild",
-    summary:
-      "Rebuilt an authentication system that had accumulated years of tech debt and security gaps.",
-    details:
-      "Replaced a homegrown session system with JWT-based auth, role-based access control, and audit logging — closing three outstanding security findings and making onboarding new permission types a config change instead of a deploy.",
-    tags: ["Node", "JWT", "PostgreSQL", "RBAC"],
-    image: "https://picsum.photos/seed/auth-rebuild/900/600",
-    link: "#",
-  },
+  
 ];
 
 const PROCESS_STEPS = [
@@ -245,6 +272,7 @@ export default function Home() {
   const glowRef = useRef(null);
   const cursorDotRef = useRef(null);
   const headlineRef = useRef(null);
+  const coinContainerRef = useRef(null);
 
   const [openProject, setOpenProject] = useState(null);
   const [openFaq, setOpenFaq] = useState(null);
@@ -326,7 +354,7 @@ export default function Home() {
 
           canvasCtx.beginPath();
           canvasCtx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-          canvasCtx.fillStyle = "rgba(58,160,255,0.75)";
+          canvasCtx.fillStyle = "rgba(28,111,209,0.35)";
           canvasCtx.fill();
         }
 
@@ -341,7 +369,7 @@ export default function Home() {
               canvasCtx.beginPath();
               canvasCtx.moveTo(a.x, a.y);
               canvasCtx.lineTo(b.x, b.y);
-              canvasCtx.strokeStyle = `rgba(58,160,255,${0.12 * (1 - dist / 110)})`;
+              canvasCtx.strokeStyle = `rgba(28,111,209,${0.06 * (1 - dist / 110)})`;
               canvasCtx.lineWidth = 0.6;
               canvasCtx.stroke();
             }
@@ -350,7 +378,7 @@ export default function Home() {
         rafId = requestAnimationFrame(tick);
       }
       tick();
-
+    
 
       /* ---------- Magnetic buttons (no glow, no custom cursor) ---------- */
       let cleanupPointer = () => { };
@@ -496,6 +524,149 @@ export default function Home() {
     window.addEventListener("scroll", onScroll);
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
+   /* -----------------------------------------------------------
+     GOLD COIN — 3D scroll-driven background (Three.js)
+  ----------------------------------------------------------- */
+  useEffect(() => {
+    const container = coinContainerRef.current;
+    if (!container) return;
+
+    const reduceMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches;
+
+    let width = container.clientWidth;
+    let height = container.clientHeight;
+
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(35, width / height, 0.1, 100);
+    camera.position.z = 6;
+
+    const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+    renderer.setSize(width, height);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    container.appendChild(renderer.domElement);
+
+    /* ---- Lighting (warm gold tones) ---- */
+    scene.add(new THREE.AmbientLight(0xfff3d0, 0.55));
+    const key = new THREE.DirectionalLight(0xffe9b0, 1.5);
+    key.position.set(3, 4, 5);
+    scene.add(key);
+    const rim = new THREE.DirectionalLight(0xffd166, 0.9);
+    rim.position.set(-4, -2, -3);
+    scene.add(rim);
+
+    /* ---- Canvas texture for RK face ---- */
+    function makeFaceTexture(mirror) {
+      const size = 512;
+      const c = document.createElement("canvas");
+      c.width = size;
+      c.height = size;
+      const ctx = c.getContext("2d");
+
+      ctx.translate(size / 2, size / 2);
+      ctx.rotate(Math.PI / 2);
+      if (mirror) {
+        ctx.scale(-1, -1);
+      }
+      ctx.translate(-size / 2, -size / 2);
+
+      const grad = ctx.createRadialGradient(
+        size * 0.35, size * 0.35, size * 0.05,
+        size * 0.5, size * 0.5, size * 0.5
+      );
+      grad.addColorStop(0, "#fff6d8");
+      grad.addColorStop(0.35, "#f2c94c");
+      grad.addColorStop(0.7, "#d4a017");
+      grad.addColorStop(1, "#8a6a12");
+      ctx.fillStyle = grad;
+      ctx.beginPath();
+      ctx.arc(size / 2, size / 2, size / 2, 0, Math.PI * 2);
+      ctx.fill();
+
+      ctx.strokeStyle = "rgba(255,255,255,0.35)";
+      ctx.lineWidth = 10;
+      ctx.beginPath();
+      ctx.arc(size / 2, size / 2, size / 2 - 14, 0, Math.PI * 2);
+      ctx.stroke();
+
+      ctx.font = "bold 170px monospace";
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      ctx.fillStyle = "rgba(90,60,10,0.85)";
+      ctx.fillText("RK", size / 2 + 4, size / 2 + 8);
+      ctx.fillStyle = "rgba(255,240,190,0.9)";
+      ctx.fillText("RK", size / 2, size / 2);
+
+      return new THREE.CanvasTexture(c);
+    }
+
+    const faceTextureA = makeFaceTexture(true);
+    const faceTextureB = makeFaceTexture(false);
+
+    const edgeMaterial = new THREE.MeshStandardMaterial({
+      color: 0xd4a017,
+      metalness: 1,
+      roughness: 0.35,
+    });
+    const faceMaterialA = new THREE.MeshStandardMaterial({
+      map: faceTextureA,
+      metalness: 0.9,
+      roughness: 0.3,
+    });
+    const faceMaterialB = new THREE.MeshStandardMaterial({
+      map: faceTextureB,
+      metalness: 0.9,
+      roughness: 0.3,
+    });
+
+    const geometry = new THREE.CylinderGeometry(2, 2, 0.35, 128);
+    const coin = new THREE.Mesh(geometry, [
+      edgeMaterial,
+      faceMaterialA,
+      faceMaterialB,
+    ]);
+    coin.rotation.x = Math.PI / 2;
+    scene.add(coin);
+
+    let rafId;
+    function renderLoop() {
+      renderer.render(scene, camera);
+      rafId = requestAnimationFrame(renderLoop);
+    }
+    renderLoop();
+
+    /* ---- Scroll-driven rotation ---- */
+     function handleScroll() {
+      if (reduceMotion) return;
+      const max = document.documentElement.scrollHeight - window.innerHeight || 1;
+      const fraction = window.scrollY / max;
+      coin.rotation.x = Math.PI / 2 + fraction * Math.PI * 6;
+    }
+    window.addEventListener("scroll", handleScroll, { passive: true });
+
+    function handleResize() {
+      width = container.clientWidth;
+      height = container.clientHeight;
+      camera.aspect = width / height;
+      camera.updateProjectionMatrix();
+      renderer.setSize(width, height);
+    }
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("resize", handleResize);
+      cancelAnimationFrame(rafId);
+      geometry.dispose();
+      edgeMaterial.dispose();
+      faceMaterial.dispose();
+      faceTexture.dispose();
+      renderer.dispose();
+      container.removeChild(renderer.domElement);
+    };
+  }, []);
+
 
   const scrollToTop = () => {
     const reduceMotion = window.matchMedia(
@@ -556,7 +727,7 @@ export default function Home() {
   return (
     <div
       ref={rootRef}
-      className="relative min-h-screen w-full overflow-x-hidden bg-[#050a14] text-[#eaf1fb]"
+      className="relative min-h-screen w-full overflow-x-hidden bg-[#ffffff] text-[#0f172a]"
       style={{ opacity: 0 }}
     >
       {/* ================= BACKGROUND LAYERS ================= */}
@@ -565,27 +736,25 @@ export default function Home() {
         className="pointer-events-none fixed inset-0 z-0 h-full w-full opacity-50"
       />
       <div
+  ref={coinContainerRef}
+  className="gold-coin-bg pointer-events-none fixed left-1/2 top-1/2 z-[1] -translate-x-1/2 -translate-y-1/2"
+  aria-hidden="true"
+/>
+      <div
         className="scanlines pointer-events-none fixed inset-0 z-[1]"
         aria-hidden="true"
       />
-      <div
-        className="pointer-events-none fixed inset-0 z-[1]"
-        style={{
-          background:
-            "radial-gradient(ellipse at center, transparent 40%, rgba(0,0,0,0.65) 100%)",
-        }}
-        aria-hidden="true"
-      />
+   
 
 
       <main className="relative z-[3]">
         {/* ================= NAV ================= */}
-        <nav className="nav-bar fixed left-0 right-0 top-0 z-50 grid grid-cols-[auto_1fr_auto] items-center gap-4 border-b border-[rgba(58,160,255,0.14)] bg-[#050a14]/70 px-5 py-3 font-mono text-[11px] tracking-wide text-[#eaf1fb]/55 backdrop-blur-md sm:px-8 sm:text-xs">
+        <nav className="nav-bar fixed left-0 right-0 top-0 z-50 grid grid-cols-[auto_1fr_auto] items-center gap-4 border-b border-[rgba(28,111,209,0.15)] bg-[#ffffff]/80 px-5 py-3 font-mono text-[11px] tracking-wide text-[#4b5563] backdrop-blur-md sm:px-8 sm:text-xs">
           <a href="#" className="flex items-center flex-shrink-0" aria-label="RK Home">
             <svg width="46" height="46" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <rect x="1.5" y="1.5" width="45" height="45" rx="10" stroke="#3aa0ff" strokeWidth="1.5" fill="rgba(58,160,255,0.06)" />
+              <rect x="1.5" y="1.5" width="45" height="45" rx="10" stroke="#3aa0ff" strokeWidth="1.5" fill="rgba(58,160,255,0.08)" />
               <path d="M13 33V15h7.8c3.4 0 5.9 2.2 5.9 5.4 0 2.3-1.3 4.1-3.4 4.9L27 33h-4l-3.6-7.4h-2.6V33h-3.8z" fill="#3aa0ff" />
-              <path d="M16.8 18.2v4.6h3.6c1.6 0 2.7-1 2.7-2.3s-1.1-2.3-2.7-2.3h-3.6z" fill="#050a14" />
+              <path d="M16.8 18.2v4.6h3.6c1.6 0 2.7-1 2.7-2.3s-1.1-2.3-2.7-2.3h-3.6z" fill="#ffffff" />
               <path d="M28.5 33V15h3.8v7.6l6.3-7.6h4.5l-7 8.2L43.3 33h-4.6l-5.1-7.3-1.3 1.5V33h-3.8z" fill="#8b6bff" />
             </svg>
           </a>
@@ -608,7 +777,7 @@ export default function Home() {
   </a>
 </div>
            <a href="#timeline"
-            className="justify-self-end flex items-center gap-1.5 rounded-full border border-[#3aa0ff] px-4 py-2 font-mono text-[11px] font-semibold text-[#3aa0ff] transition-colors hover:bg-[rgba(58,160,255,0.1)]"
+            className="justify-self-end flex items-center gap-1.5 rounded-full border border-[#1c6fd1] px-4 py-2 font-mono text-[11px] font-semibold text-[#1c6fd1] transition-colors hover:bg-[rgba(28,111,209,0.08)]"
           >
             MY JOURNEY
           </a>
@@ -625,12 +794,12 @@ export default function Home() {
               <h1
                 ref={headlineRef}
                 className="mb-6 min-h-[1.1em] font-mono text-[13vw] font-extrabold leading-[0.98] tracking-tight sm:mb-8 sm:text-[11vw] md:text-[8vw] lg:text-[5.6rem]"
-                style={{ textShadow: "0 0 24px rgba(58,160,255,0.15)" }}
+                style={{ textShadow: "0 0 24px rgba(58,160,255,0.08)" }}
               >
                 RHIM KHAN
               </h1>
 
-              <p className="lede mb-9 max-w-xl text-sm leading-7 text-[#eaf1fb]/55 sm:mb-11 sm:text-base md:text-lg md:leading-8">
+              <p className="lede mb-9 max-w-xl text-sm leading-7 text-[#4b5563] sm:mb-11 sm:text-base md:text-lg md:leading-8">
                 I build modern digital products with code, motion and carefully
                 engineered interfaces — from frontend experiences to backend
                 systems.
@@ -648,7 +817,7 @@ export default function Home() {
                 <a
                   href="#contact"
                   ref={(el) => setMagneticRef(el, 1)}
-                  className="flex items-center gap-2 rounded-[3px] border border-[#3aa0ff] px-5 py-3.5 font-mono text-xs font-semibold text-[#3aa0ff] transition-colors hover:bg-[rgba(58,160,255,0.08)] sm:px-6"
+                  className="flex items-center gap-2 rounded-[3px] border border-[#1c6fd1] px-5 py-3.5 font-mono text-xs font-semibold text-[#1c6fd1] transition-colors hover:bg-[rgba(28,111,209,0.08)] sm:px-6"
                 >
                   CONTACT ME
                   <Mail size={14} />
@@ -690,14 +859,14 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="mx-auto mt-10 flex w-full max-w-[1180px] items-center gap-2 font-mono text-[9px] tracking-wide text-[#eaf1fb]/25 sm:mt-14">
+          <div className="mx-auto mt-10 flex w-full max-w-[1180px] items-center gap-2 font-mono text-[9px] tracking-wide text-[#94a3b8] sm:mt-14">
             <Terminal size={12} />
             SCROLL TO EXPLORE
           </div>
         </section>
 
         {/* ================= MARQUEE ================= */}
-        <div className="overflow-hidden border-y border-[rgba(58,160,255,0.14)] py-5">
+        <div className="overflow-hidden border-y border-[rgba(28,111,209,0.15)] py-5">
           <div
             className="flex w-max gap-8 sm:gap-12"
             style={{ animation: "marquee 28s linear infinite" }}
@@ -705,7 +874,7 @@ export default function Home() {
             {[...MARQUEE_ITEMS, ...MARQUEE_ITEMS].map((item, i) => (
               <span
                 key={i}
-                className="flex items-center gap-3 whitespace-nowrap font-mono text-xs text-[#eaf1fb]/30 sm:text-sm"
+                className="flex items-center gap-3 whitespace-nowrap font-mono text-xs text-[#94a3b8] sm:text-sm"
               >
                 {item} <span className="text-[#1c6fd1]">◆</span>
               </span>
@@ -717,13 +886,13 @@ export default function Home() {
                 <section id="about" className="relative overflow-hidden px-5 py-24 sm:px-8 md:px-10 md:py-36">
           {/* ---- Ambient glow blobs ---- */}
           <div
-            className="pointer-events-none absolute -left-40 top-10 h-[420px] w-[420px] rounded-full opacity-40 blur-[110px]"
-            style={{ background: "radial-gradient(circle, rgba(58,160,255,0.35), transparent 70%)" }}
+            className="pointer-events-none absolute -left-40 top-10 h-[420px] w-[420px] rounded-full opacity-20 blur-[110px]"
+            style={{ background: "radial-gradient(circle, rgba(58,160,255,0.18), transparent 70%)" }}
             aria-hidden="true"
           />
           <div
-            className="pointer-events-none absolute -right-32 bottom-0 h-[380px] w-[380px] rounded-full opacity-30 blur-[110px]"
-            style={{ background: "radial-gradient(circle, rgba(139,107,255,0.35), transparent 70%)" }}
+            className="pointer-events-none absolute -right-32 bottom-0 h-[380px] w-[380px] rounded-full opacity-15 blur-[110px]"
+            style={{ background: "radial-gradient(circle, rgba(139,107,255,0.18), transparent 70%)" }}
             aria-hidden="true"
           />
 
@@ -734,13 +903,13 @@ export default function Home() {
                 <span className="about-typewriter mb-5 inline-block font-mono text-sm font-semibold tracking-[0.25em] text-[#1c6fd1] sm:text-base">
    ABOUT ME
 </span>
-                <h2 className="mb-6 text-3xl font-bold leading-[1.15] text-[#eaf1fb] sm:text-4xl md:text-[2.75rem]">
+                <h2 className="mb-6 text-3xl font-bold leading-[1.15] text-[#0f172a] sm:text-4xl md:text-[2.75rem]">
                   Turning Ideas Into{" "}
                   <span className="bg-gradient-to-r from-[#3aa0ff] to-[#8b6bff] bg-clip-text text-transparent">
                     Digital Experiences.
                   </span>
                 </h2>
-                <p className="mb-10 max-w-md text-sm leading-7 text-[#eaf1fb]/55 sm:text-base sm:leading-8">
+                <p className="mb-10 max-w-md text-sm leading-7 text-[#4b5563] sm:text-base sm:leading-8">
                   I'm a passionate Web Developer focused on building modern,
                   responsive, and high-quality web experiences. I enjoy
                   turning ideas into clean, interactive, and user-friendly
@@ -758,16 +927,16 @@ export default function Home() {
               {/* ================= RIGHT — VISUAL ================= */}
               <div className="relative mx-auto h-[380px] w-full max-w-[440px] sm:h-[440px]">
                 {/* Glass code-editor card */}
-                <div className="about-glass-card absolute inset-0 m-auto flex h-[240px] w-[300px] flex-col overflow-hidden rounded-2xl border border-[rgba(58,160,255,0.25)] bg-[rgba(10,18,36,0.55)] shadow-[0_20px_60px_rgba(0,0,0,0.5)] backdrop-blur-xl sm:h-[270px] sm:w-[330px]">
-                  <div className="flex items-center gap-1.5 border-b border-[rgba(58,160,255,0.15)] px-4 py-3">
+                <div className="about-glass-card absolute inset-0 m-auto flex h-[240px] w-[300px] flex-col overflow-hidden rounded-2xl border border-[rgba(28,111,209,0.22)] bg-[rgba(245,246,248,0.75)] shadow-[0_10px_30px_rgba(0,0,0,0.08)] backdrop-blur-xl sm:h-[270px] sm:w-[330px]">
+                  <div className="flex items-center gap-1.5 border-b border-[rgba(28,111,209,0.15)] px-4 py-3">
                     <span className="h-2.5 w-2.5 rounded-full bg-[#ff5d5d]/70" />
                     <span className="h-2.5 w-2.5 rounded-full bg-[#ffd166]/70" />
                     <span className="h-2.5 w-2.5 rounded-full bg-[#3aa0ff]/70" />
-                    <span className="ml-3 font-mono text-[10px] text-[#eaf1fb]/40">dev.tsx</span>
+                    <span className="ml-3 font-mono text-[10px] text-[#6b7280]">dev.tsx</span>
                   </div>
-                  <div className="flex-1 px-5 py-4 font-mono text-[11px] leading-6 text-[#eaf1fb]/70 sm:text-xs">
+                  <div className="flex-1 px-5 py-4 font-mono text-[11px] leading-6 text-[#334155] sm:text-xs">
                     <div><span className="text-[#8b6bff]">const</span> <span className="text-[#3aa0ff]">build</span> = () =&gt; {"{"}</div>
-                    <div className="pl-4 text-[#eaf1fb]/45">// crafting clean UI</div>
+                    <div className="pl-4 text-[#6b7280]">// crafting clean UI</div>
                     <div className="pl-4"><span className="text-[#3aa0ff]">return</span> &lt;<span className="text-[#8b6bff]">Experience</span> /&gt;;</div>
                     <div>{"}"}</div>
                     <div className="mt-2 inline-block h-4 w-1.5 animate-pulse bg-[#3aa0ff]" />
@@ -775,22 +944,22 @@ export default function Home() {
                 </div>
 
                 {/* Floating tech badges */}
-                <span className="about-badge absolute left-2 top-4 rounded-full border border-[rgba(58,160,255,0.3)] bg-[#0a1224]/90 px-3 py-1.5 font-mono text-[10px] font-semibold text-[#3aa0ff] shadow-lg backdrop-blur-sm">
+                <span className="about-badge absolute left-2 top-4 rounded-full border border-[rgba(28,111,209,0.25)] bg-[#f5f6f8]/95 px-3 py-1.5 font-mono text-[10px] font-semibold text-[#1c6fd1] shadow-md backdrop-blur-sm">
                   React
                 </span>
-                <span className="about-badge about-badge-delay-1 absolute right-0 top-14 rounded-full border border-[rgba(139,107,255,0.3)] bg-[#0a1224]/90 px-3 py-1.5 font-mono text-[10px] font-semibold text-[#8b6bff] shadow-lg backdrop-blur-sm">
+                <span className="about-badge about-badge-delay-1 absolute right-0 top-14 rounded-full border border-[rgba(139,107,255,0.28)] bg-[#f5f6f8]/95 px-3 py-1.5 font-mono text-[10px] font-semibold text-[#8b6bff] shadow-md backdrop-blur-sm">
                   Node.js
                 </span>
-                <span className="about-badge about-badge-delay-2 absolute -left-4 bottom-20 rounded-full border border-[rgba(58,160,255,0.3)] bg-[#0a1224]/90 px-3 py-1.5 font-mono text-[10px] font-semibold text-[#3aa0ff] shadow-lg backdrop-blur-sm">
+                <span className="about-badge about-badge-delay-2 absolute -left-4 bottom-20 rounded-full border border-[rgba(28,111,209,0.25)] bg-[#f5f6f8]/95 px-3 py-1.5 font-mono text-[10px] font-semibold text-[#1c6fd1] shadow-md backdrop-blur-sm">
                   MongoDB
                 </span>
-                <span className="about-badge about-badge-delay-3 absolute right-2 bottom-6 rounded-full border border-[rgba(139,107,255,0.3)] bg-[#0a1224]/90 px-3 py-1.5 font-mono text-[10px] font-semibold text-[#8b6bff] shadow-lg backdrop-blur-sm">
+                <span className="about-badge about-badge-delay-3 absolute right-2 bottom-6 rounded-full border border-[rgba(139,107,255,0.28)] bg-[#f5f6f8]/95 px-3 py-1.5 font-mono text-[10px] font-semibold text-[#8b6bff] shadow-md backdrop-blur-sm">
                   Tailwind CSS
                 </span>
-                <span className="about-badge about-badge-delay-4 absolute left-10 -top-2 rounded-full border border-[rgba(58,160,255,0.3)] bg-[#0a1224]/90 px-3 py-1.5 font-mono text-[10px] font-semibold text-[#3aa0ff] shadow-lg backdrop-blur-sm">
+                <span className="about-badge about-badge-delay-4 absolute left-10 -top-2 rounded-full border border-[rgba(28,111,209,0.25)] bg-[#f5f6f8]/95 px-3 py-1.5 font-mono text-[10px] font-semibold text-[#1c6fd1] shadow-md backdrop-blur-sm">
                   JavaScript
                 </span>
-                <span className="about-badge about-badge-delay-2 absolute -right-3 top-1/2 rounded-full border border-[rgba(139,107,255,0.3)] bg-[#0a1224]/90 px-3 py-1.5 font-mono text-[10px] font-semibold text-[#8b6bff] shadow-lg backdrop-blur-sm">
+                <span className="about-badge about-badge-delay-2 absolute -right-3 top-1/2 rounded-full border border-[rgba(139,107,255,0.28)] bg-[#f5f6f8]/95 px-3 py-1.5 font-mono text-[10px] font-semibold text-[#8b6bff] shadow-md backdrop-blur-sm">
                   Framer Motion
                 </span>
               </div>
@@ -798,50 +967,51 @@ export default function Home() {
           </div>
         </section>
 
-        <hr className="border-t border-[rgba(58,160,255,0.14)]" />
+        <hr className="border-t border-[rgba(28,111,209,0.15)]" />
 
-        {/* ================= SKILLS ================= */}
-        <section id="skills" className="px-5 py-24 sm:px-8 md:px-10 md:py-36">
-          <div className="mx-auto max-w-[1100px]">
-            <span className="mb-4 block font-mono text-[11px] tracking-wide text-[#1c6fd1]">
-              // 02 — CAPABILITIES
-            </span>
-            <h2 className="mb-6 max-w-lg text-3xl font-bold leading-tight sm:text-4xl md:text-5xl">
-              What I'm Actually Good At.
-            </h2>
-            <p className="mb-12 max-w-lg text-sm leading-7 text-[#eaf1fb]/55 sm:mb-16 sm:text-base">
-              Skills are only useful in relation to what they build — here's the
-              honest breakdown, not the resume-inflated one.
-            </p>
+        
+        
+{/* ================= SKILLS ================= */}
+<section id="skills" className="px-5 py-24 sm:px-8 md:px-10 md:py-36">
+  <div className="mx-auto max-w-[1100px]">
+    <span className="mb-4 block font-mono text-[11px] tracking-wide text-[#1c6fd1]">
+      // 02 — CAPABILITIES
+    </span>
+    <h2 className="mb-6 max-w-lg text-3xl font-bold leading-tight sm:text-4xl md:text-5xl">
+      What I'm Actually Good At.
+    </h2>
+    <p className="mb-12 max-w-lg text-sm leading-7 text-[#4b5563] sm:mb-16 sm:text-base">
+      A quick visual look at the skills I bring to every project.
+    </p>
 
-            <div className="reveal-block grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-3 lg:gap-11">
-              {SKILL_GROUPS.map((group, gi) => (
-                <div key={group.title}>
-                  <h4 className="mb-5 font-mono text-xs tracking-wide text-[#1c6fd1]">
-                    {group.title}
-                  </h4>
-                  {group.skills.map((skill, si) => (
-                    <div key={skill.name} className={`skill-row-${gi}-${si} mb-4`}>
-                      <div className="mb-2 flex justify-between text-sm text-[#eaf1fb]/55">
-                        <span>{skill.name}</span>
-                        <span className="font-mono text-xs text-[#eaf1fb]">
-                          {skillFills[gi][si]}%
-                        </span>
-                      </div>
-                      <div className="h-1 overflow-hidden rounded-full bg-[rgba(58,160,255,0.1)]">
-                        <div
-                          className="h-full rounded-full bg-gradient-to-r from-[#1c6fd1] to-[#3aa0ff] transition-[width] duration-[1400ms] ease-out"
-                          style={{ width: `${skillFills[gi][si]}%` }}
-                        />
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              ))}
-            </div>
+    <div className="reveal-block grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      {SKILLS.map((skill, i) => (
+        <div
+          key={skill.title}
+          className="electric-card relative rounded-md bg-[#f5f6f8] p-4 sm:p-5"
+        >
+          <div className="project-image-wrap relative mb-4 aspect-[4/3] overflow-hidden rounded-[4px]">
+            <img
+              src={skill.image}
+              alt={skill.title}
+              loading="lazy"
+              className="h-full w-full object-cover"
+            />
+            <div className="project-image-overlay" />
           </div>
-        </section>
-        <hr className="border-t border-[rgba(58,160,255,0.14)]" />
+
+          <span className="mb-2 block font-mono text-[10px] text-[#1c6fd1]">
+            SKILL_0{i + 1}
+          </span>
+          <h3 className="text-base font-semibold text-[#0f172a] sm:text-lg">
+            {skill.title}
+          </h3>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+        <hr className="border-t border-[rgba(28,111,209,0.15)]" />
 
         {/* ================= TIMELINE ================= */}
         <section id="timeline" className="px-5 py-24 sm:px-8 md:px-10 md:py-36">
@@ -852,33 +1022,32 @@ export default function Home() {
             <h2 className="mb-6 max-w-lg text-3xl font-bold leading-tight sm:text-4xl md:text-5xl">
               My Education Journey
             </h2>
-            <p className="mb-12 max-w-lg text-sm leading-7 text-[#eaf1fb]/55 sm:mb-16 sm:text-base">
+            <p className="mb-12 max-w-lg text-sm leading-7 text-[#4b5563] sm:mb-16 sm:text-base">
               The short version of my academic path — the degrees, the courses,
                and the milestones that shaped where I am today.
             </p>
 
             <div className="relative reveal-block pl-7">
-              <div className="absolute bottom-1.5 left-1 top-1.5 w-px bg-[rgba(58,160,255,0.28)]" />
+              <div className="absolute bottom-1.5 left-1 top-1.5 w-px bg-[rgba(28,111,209,0.25)]" />
               {TIMELINE.map((item, i) => (
-                <div
-                  key={item.title}
-                  className={`reveal relative ${i === TIMELINE.length - 1 ? "" : "pb-10 sm:pb-11"
-                    }`}
-                >
+               <div
+  key={item.title}
+  className={`reveal relative ${i === TIMELINE.length - 1 ? "" : "pb-14 sm:pb-16"}`}
+>
                   <span
                     className="absolute -left-7 top-1 h-2.5 w-2.5 rounded-full bg-[#3aa0ff]"
                     style={{
                       boxShadow:
-                        "0 0 0 4px #050a14, 0 0 0 5px rgba(58,160,255,0.28)",
+                        "0 0 0 4px #ffffff, 0 0 0 5px rgba(58,160,255,0.22)",
                     }}
                   />
                   <div className="mb-2 font-mono text-[11px] text-[#1c6fd1]">
                     {item.meta}
                   </div>
-                  <h4 className="mb-2 text-base font-semibold text-[#eaf1fb] sm:text-lg">
+                  <h4 className="mb-2 text-base font-semibold text-[#0f172a] sm:text-lg">
                     {item.title}
                   </h4>
-                  <p className="max-w-xl text-sm leading-7 text-[#eaf1fb]/55">
+                  <p className="max-w-xl text-sm leading-7 text-[#4b5563]">
                     {item.body}
                   </p>
                 </div>
@@ -887,7 +1056,7 @@ export default function Home() {
           </div>
         </section>
 
-        <hr className="border-t border-[rgba(58,160,255,0.14)]" />
+        <hr className="border-t border-[rgba(28,111,209,0.15)]" />
 
         {/* ================= PROJECTS ================= */}
                 <section id="projects" className="px-5 py-24 sm:px-8 md:px-10 md:py-36">
@@ -898,7 +1067,7 @@ export default function Home() {
             <h2 className="mb-6 max-w-lg text-3xl font-bold leading-tight sm:text-4xl md:text-5xl">
               My Projects
             </h2>
-            <p className="mb-12 max-w-lg text-sm leading-7 text-[#eaf1fb]/55 sm:mb-16 sm:text-base">
+            <p className="mb-12 max-w-lg text-sm leading-7 text-[#4b5563] sm:mb-16 sm:text-base">
               Hover a project to preview it — stack and scope at a glance.
             </p>
 
@@ -906,7 +1075,7 @@ export default function Home() {
               {PROJECTS.map((project) => (
                 <div
                   key={project.idx}
-                  className="electric-card relative rounded-md bg-[#0a1224] p-4 sm:p-5"
+                  className="electric-card relative rounded-md bg-[#f5f6f8] p-4 sm:p-5"
                 >
                   <div className="project-image-wrap relative mb-4 aspect-[4/3] overflow-hidden rounded-[4px]">
                     <img
@@ -918,25 +1087,27 @@ export default function Home() {
                     <div className="project-image-overlay" />
                     
                      <a href={project.link}
-                      onClick={(e) => e.stopPropagation()}
-                      className="go-live-btn absolute left-1/2 top-1/2 z-10 flex items-center gap-2 whitespace-nowrap rounded-full border border-[#3aa0ff] bg-[#050a14]/85 px-4 py-2 font-mono text-[11px] font-semibold text-[#3aa0ff] backdrop-blur-sm"
-                    >
-                      GO LIVE
-                      <ArrowUpRight size={12} />
-                    </a>
+  target="_blank"
+  rel="noopener noreferrer"
+  onClick={(e) => e.stopPropagation()}
+  className="go-live-btn absolute left-1/2 top-1/2 z-10 flex items-center gap-2 whitespace-nowrap rounded-full border border-[#3aa0ff] bg-[#050a14]/85 px-4 py-2 font-mono text-[11px] font-semibold text-[#3aa0ff] backdrop-blur-sm"
+>
+  GO LIVE
+  <ArrowUpRight size={12} />
+</a>
                   </div>
 
                   <span className="mb-2 block font-mono text-[10px] text-[#1c6fd1]">
                     {project.idx}
                   </span>
-                  <h3 className="mb-3 text-base font-semibold text-[#eaf1fb] sm:text-lg">
+                  <h3 className="mb-3 text-base font-semibold text-[#0f172a] sm:text-lg">
                     {project.title}
                   </h3>
                   <div className="flex flex-wrap gap-1.5">
                     {project.tags.map((tag) => (
                       <span
                         key={tag}
-                        className="rounded-full border border-[rgba(58,160,255,0.28)] px-2 py-0.5 font-mono text-[9px] text-[#eaf1fb]/55"
+                        className="rounded-full border border-[rgba(28,111,209,0.25)] px-2 py-0.5 font-mono text-[9px] text-[#4b5563]"
                       >
                         {tag}
                       </span>
@@ -950,7 +1121,7 @@ export default function Home() {
 
      
 
-      <hr className="border-t border-[rgba(58,160,255,0.14)]" />
+      <hr className="border-t border-[rgba(28,111,209,0.15)]" />
 
       {/* ================= TESTIMONIALS ================= */}
       <section
@@ -965,19 +1136,19 @@ export default function Home() {
             What it's like working together.
           </h2>
 
-          <div className="reveal-block min-h-[220px] border border-[rgba(58,160,255,0.14)] bg-[#0a1224] p-6 sm:p-10 md:p-12">
-            <p className="mb-7 max-w-2xl text-base leading-7 text-[#eaf1fb] sm:text-lg">
+          <div className="reveal-block min-h-[220px] border border-[rgba(28,111,209,0.15)] bg-[#f5f6f8] p-6 sm:p-10 md:p-12">
+            <p className="mb-7 max-w-2xl text-base leading-7 text-[#0f172a] sm:text-lg">
               {TESTIMONIALS[testiIndex].quote}
             </p>
             <div className="flex items-center gap-3">
-              <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-[#1c6fd1] to-[#3aa0ff] font-mono text-sm font-bold text-[#050a14]">
+              <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-[#1c6fd1] to-[#3aa0ff] font-mono text-sm font-bold text-[#ffffff]">
                 {TESTIMONIALS[testiIndex].initials}
               </div>
               <div>
-                <div className="text-sm font-semibold text-[#eaf1fb]">
+                <div className="text-sm font-semibold text-[#0f172a]">
                   {TESTIMONIALS[testiIndex].name}
                 </div>
-                <div className="font-mono text-[11px] text-[#eaf1fb]/55">
+                <div className="font-mono text-[11px] text-[#4b5563]">
                   {TESTIMONIALS[testiIndex].role}
                 </div>
               </div>
@@ -991,7 +1162,7 @@ export default function Home() {
                     onClick={() => setTestiIndex(i)}
                     className={`h-1.5 w-1.5 cursor-pointer rounded-full transition-all ${i === testiIndex
                         ? "scale-125 bg-[#3aa0ff]"
-                        : "bg-[#eaf1fb]/30"
+                        : "bg-[#cbd5e1]"
                       }`}
                   />
                 ))}
@@ -1005,7 +1176,7 @@ export default function Home() {
                     )
                   }
                   aria-label="Previous testimonial"
-                  className="flex h-9 w-9 items-center justify-center rounded-full border border-[rgba(58,160,255,0.28)] font-mono transition-colors hover:border-[#3aa0ff] hover:text-[#3aa0ff]"
+                  className="flex h-9 w-9 items-center justify-center rounded-full border border-[rgba(28,111,209,0.25)] font-mono transition-colors hover:border-[#1c6fd1] hover:text-[#1c6fd1]"
                 >
                   ←
                 </button>
@@ -1014,7 +1185,7 @@ export default function Home() {
                     setTestiIndex((testiIndex + 1) % TESTIMONIALS.length)
                   }
                   aria-label="Next testimonial"
-                  className="flex h-9 w-9 items-center justify-center rounded-full border border-[rgba(58,160,255,0.28)] font-mono transition-colors hover:border-[#3aa0ff] hover:text-[#3aa0ff]"
+                  className="flex h-9 w-9 items-center justify-center rounded-full border border-[rgba(28,111,209,0.25)] font-mono transition-colors hover:border-[#1c6fd1] hover:text-[#1c6fd1]"
                 >
                   →
                 </button>
@@ -1026,7 +1197,7 @@ export default function Home() {
 
      
 
-      <hr className="border-t border-[rgba(58,160,255,0.14)]" />
+      <hr className="border-t border-[rgba(28,111,209,0.15)]" />
 
       {/* ================= CONTACT ================= */}
       <section id="contact" className="px-5 py-24 sm:px-8 md:px-10 md:py-36">
@@ -1037,35 +1208,35 @@ export default function Home() {
           <h2 className="mb-6 max-w-lg text-3xl font-bold leading-tight sm:text-4xl md:text-5xl">
             Tell me what you're building.
           </h2>
-          <p className="mb-12 max-w-lg text-sm leading-7 text-[#eaf1fb]/55 sm:mb-16 sm:text-base">
+          <p className="mb-12 max-w-lg text-sm leading-7 text-[#4b5563] sm:mb-16 sm:text-base">
             A few sentences on the problem is plenty to start — I'll follow up
             with the right questions.
           </p>
 
           <div className="reveal-block grid grid-cols-1 gap-10 md:grid-cols-[0.8fr_1.2fr] md:gap-12">
             <div>
-              <p className="mb-6 text-sm leading-7 text-[#eaf1fb]/55">
+              <p className="mb-6 text-sm leading-7 text-[#4b5563]">
                 Based remotely, working across time zones. Usual response time
                 is under 24 hours on weekdays.
               </p>
-              <div className="mb-3 flex items-center gap-2.5 font-mono text-[13px] text-[#eaf1fb]">
+              <div className="mb-3 flex items-center gap-2.5 font-mono text-[13px] text-[#0f172a]">
                 <span className="w-16 flex-shrink-0 text-[#1c6fd1]">EMAIL</span>
                 hello@example.com
               </div>
-              <div className="mb-3 flex items-center gap-2.5 font-mono text-[13px] text-[#eaf1fb]">
+              <div className="mb-3 flex items-center gap-2.5 font-mono text-[13px] text-[#0f172a]">
                 <span className="w-16 flex-shrink-0 text-[#1c6fd1]">STATUS</span>
                 Accepting new work
               </div>
-              <div className="flex items-center gap-2.5 font-mono text-[13px] text-[#eaf1fb]">
+              <div className="flex items-center gap-2.5 font-mono text-[13px] text-[#0f172a]">
                 <span className="w-16 flex-shrink-0 text-[#1c6fd1]">REPLY</span>
                 &lt; 24h, weekdays
               </div>
 
               <div className="mt-9 flex gap-3">
-                <span className="rounded-full border border-[rgba(58,160,255,0.28)] px-4 py-2 font-mono text-xs text-[#eaf1fb]/55">
+                <span className="rounded-full border border-[rgba(28,111,209,0.25)] px-4 py-2 font-mono text-xs text-[#4b5563]">
                   GH
                 </span>
-                <span className="rounded-full border border-[rgba(58,160,255,0.28)] px-4 py-2 font-mono text-xs text-[#eaf1fb]/55">
+                <span className="rounded-full border border-[rgba(28,111,209,0.25)] px-4 py-2 font-mono text-xs text-[#4b5563]">
                   IN
                 </span>
               </div>
@@ -1073,7 +1244,7 @@ export default function Home() {
 
             <form onSubmit={handleSubmit} className="flex flex-col gap-5" noValidate>
               <div className="flex flex-col gap-2">
-                <label htmlFor="c-name" className="font-mono text-[11px] text-[#eaf1fb]/55">
+                <label htmlFor="c-name" className="font-mono text-[11px] text-[#4b5563]">
                   NAME
                 </label>
                 <input
@@ -1083,15 +1254,15 @@ export default function Home() {
                   autoComplete="name"
                   value={formData.name}
                   onChange={handleChange}
-                  className="rounded-[3px] border border-[rgba(58,160,255,0.28)] bg-[#0a1224] px-3.5 py-3 text-sm text-[#eaf1fb] outline-none transition-colors focus:border-[#3aa0ff]"
+                  className="rounded-[3px] border border-[rgba(28,111,209,0.25)] bg-[#f5f6f8] px-3.5 py-3 text-sm text-[#0f172a] outline-none transition-colors focus:border-[#3aa0ff]"
                 />
-                <span className="min-h-[14px] font-mono text-[11px] text-[#ff5d5d]">
+                <span className="min-h-[14px] font-mono text-[11px] text-[#dc2626]">
                   {formErrors.name}
                 </span>
               </div>
 
               <div className="flex flex-col gap-2">
-                <label htmlFor="c-email" className="font-mono text-[11px] text-[#eaf1fb]/55">
+                <label htmlFor="c-email" className="font-mono text-[11px] text-[#4b5563]">
                   EMAIL
                 </label>
                 <input
@@ -1101,15 +1272,15 @@ export default function Home() {
                   autoComplete="email"
                   value={formData.email}
                   onChange={handleChange}
-                  className="rounded-[3px] border border-[rgba(58,160,255,0.28)] bg-[#0a1224] px-3.5 py-3 text-sm text-[#eaf1fb] outline-none transition-colors focus:border-[#3aa0ff]"
+                  className="rounded-[3px] border border-[rgba(28,111,209,0.25)] bg-[#f5f6f8] px-3.5 py-3 text-sm text-[#0f172a] outline-none transition-colors focus:border-[#3aa0ff]"
                 />
-                <span className="min-h-[14px] font-mono text-[11px] text-[#ff5d5d]">
+                <span className="min-h-[14px] font-mono text-[11px] text-[#dc2626]">
                   {formErrors.email}
                 </span>
               </div>
 
               <div className="flex flex-col gap-2">
-                <label htmlFor="c-message" className="font-mono text-[11px] text-[#eaf1fb]/55">
+                <label htmlFor="c-message" className="font-mono text-[11px] text-[#4b5563]">
                   MESSAGE
                 </label>
                 <textarea
@@ -1118,9 +1289,9 @@ export default function Home() {
                   rows={5}
                   value={formData.message}
                   onChange={handleChange}
-                  className="resize-y rounded-[3px] border border-[rgba(58,160,255,0.28)] bg-[#0a1224] px-3.5 py-3 text-sm text-[#eaf1fb] outline-none transition-colors focus:border-[#3aa0ff]"
+                  className="resize-y rounded-[3px] border border-[rgba(28,111,209,0.25)] bg-[#f5f6f8] px-3.5 py-3 text-sm text-[#0f172a] outline-none transition-colors focus:border-[#3aa0ff]"
                 />
-                <span className="min-h-[14px] font-mono text-[11px] text-[#ff5d5d]">
+                <span className="min-h-[14px] font-mono text-[11px] text-[#dc2626]">
                   {formErrors.message}
                 </span>
               </div>
@@ -1151,12 +1322,12 @@ export default function Home() {
       {/* ================= SIGNOFF ================= */}
       <section
         id="signoff"
-        className="border-t border-[rgba(58,160,255,0.14)] px-5 py-24 text-center sm:px-8 md:px-10 md:py-32"
+        className="border-t border-[rgba(28,111,209,0.15)] px-5 py-24 text-center sm:px-8 md:px-10 md:py-32"
       >
         <h2 className="reveal mb-6 font-mono text-4xl font-extrabold tracking-tight sm:text-6xl md:text-7xl">
           END TRANSMISSION
         </h2>
-        <p className="reveal mx-auto mb-10 max-w-md text-sm leading-7 text-[#eaf1fb]/55 sm:text-base">
+        <p className="reveal mx-auto mb-10 max-w-md text-sm leading-7 text-[#4b5563] sm:text-base">
           If you've got something worth building, that's the whole pitch.
         </p>
         <div className="reveal flex justify-center">
@@ -1171,22 +1342,23 @@ export default function Home() {
       </section>
 
       {/* ================= FOOTER ================= */}
-      <footer className="flex flex-col gap-3 border-t border-[rgba(58,160,255,0.14)] px-5 py-6 font-mono text-[11px] text-[#eaf1fb]/55 sm:flex-row sm:items-center sm:justify-between sm:px-8 md:px-10">
+      <footer className="flex flex-col gap-3 border-t border-[rgba(28,111,209,0.15)] px-5 py-6 font-mono text-[11px] text-[#4b5563] sm:flex-row sm:items-center sm:justify-between sm:px-8 md:px-10">
         <span>RK © 2026</span>
         <div className="flex gap-5">
-          <a href="#about" className="transition-colors hover:text-[#3aa0ff]">
+          <a href="#about" className="transition-colors hover:text-[#1c6fd1]">
             About
           </a>
-          <a href="#projects" className="transition-colors hover:text-[#3aa0ff]">
+          <a href="#projects" className="transition-colors hover:text-[#1c6fd1]">
             Projects
           </a>
-          <a href="#contact" className="transition-colors hover:text-[#3aa0ff]">
+          <a href="#contact" className="transition-colors hover:text-[#1c6fd1]">
             Contact
           </a>
         </div>
         <span>NO TRACKING / NO NOISE</span>
       </footer>
     </main>
+    
 
       {/* ================= BACK TO TOP ================= */ }
       <button
@@ -1203,19 +1375,19 @@ export default function Home() {
 
       <style>{`
         html { scroll-behavior: smooth; }
-        body { margin: 0; background: #050a14; }
-        ::selection { background: #3aa0ff; color: #050a14; }
+        body { margin: 0; background: #ffffff; }
+        ::selection { background: #3aa0ff; color: #0f172a; }
 
         .scanlines {
           background: repeating-linear-gradient(
             0deg,
-            rgba(0,0,0,0.12) 0px,
-            rgba(0,0,0,0.12) 1px,
+            rgba(0,0,0,0.05) 0px,
+            rgba(0,0,0,0.05) 1px,
             transparent 1px,
             transparent 3px
           );
           mix-blend-mode: multiply;
-          opacity: 0.45;
+          opacity: 0.6;
         }
 
         @keyframes marquee {
@@ -1260,11 +1432,11 @@ export default function Home() {
           background-size: 200% 100%;
           transform: scaleX(0);
           transform-origin: center;
-          filter: drop-shadow(0 0 5px rgba(58,160,255,0.8));
+          filter: drop-shadow(0 0 5px rgba(58,160,255,0.4));
           transition: transform 0.3s ease;
         }
         .nav-link-electric:hover {
-          color: #3aa0ff;
+          color: #1c6fd1;
           animation: electric-flicker 0.6s steps(2) infinite;
         }
         .nav-link-electric:hover::after {
@@ -1276,10 +1448,10 @@ export default function Home() {
           to { background-position: 200% 0; }
         }
         @keyframes electric-flicker {
-          0%, 100% { opacity: 1; text-shadow: 0 0 8px rgba(58,160,255,0.85); }
-          45% { opacity: 0.9; text-shadow: 0 0 4px rgba(58,160,255,0.6); }
-          50% { opacity: 1; text-shadow: 0 0 10px rgba(58,160,255,0.9); }
-          70% { opacity: 0.85; text-shadow: 0 0 3px rgba(58,160,255,0.5); }
+          0%, 100% { opacity: 1; text-shadow: 0 0 8px rgba(58,160,255,0.4); }
+          45% { opacity: 0.9; text-shadow: 0 0 4px rgba(58,160,255,0.3); }
+          50% { opacity: 1; text-shadow: 0 0 10px rgba(58,160,255,0.45); }
+          70% { opacity: 0.85; text-shadow: 0 0 3px rgba(58,160,255,0.25); }
         }
 
         /* ---------------- Electric project cards ---------------- */
@@ -1290,7 +1462,7 @@ export default function Home() {
         }
         .electric-card {
           isolation: isolate;
-          box-shadow: 0 0 0 1px rgba(58,160,255,0.14);
+          box-shadow: 0 0 0 1px rgba(28,111,209,0.15);
           transition: box-shadow 0.3s ease;
         }
         .electric-card::before {
@@ -1319,7 +1491,7 @@ export default function Home() {
         }
         .electric-card:hover,
         .electric-card.is-open {
-          box-shadow: 0 0 24px rgba(58,160,255,0.22), 0 0 2px rgba(58,160,255,0.4);
+          box-shadow: 0 0 14px rgba(58,160,255,0.15), 0 0 1px rgba(58,160,255,0.25);
           animation: card-flicker 2.2s ease-in-out infinite;
         }
         .electric-card:hover::before,
@@ -1330,14 +1502,14 @@ export default function Home() {
           to { --card-angle: 360deg; }
         }
         @keyframes card-flicker {
-          0%, 100% { box-shadow: 0 0 20px rgba(58,160,255,0.2), 0 0 2px rgba(58,160,255,0.35); }
-          48% { box-shadow: 0 0 14px rgba(58,160,255,0.12), 0 0 1px rgba(58,160,255,0.2); }
-          52% { box-shadow: 0 0 30px rgba(58,160,255,0.32), 0 0 3px rgba(58,160,255,0.5); }
+          0%, 100% { box-shadow: 0 0 12px rgba(58,160,255,0.12), 0 0 1px rgba(58,160,255,0.2); }
+          48% { box-shadow: 0 0 8px rgba(58,160,255,0.08), 0 0 1px rgba(58,160,255,0.12); }
+          52% { box-shadow: 0 0 18px rgba(58,160,255,0.18), 0 0 2px rgba(58,160,255,0.28); }
         }
 
         /* ---------------- Project image hover reveal ---------------- */
         .project-image-wrap {
-          background: #0a1224;
+          background: #f5f6f8;
         }
         .project-image-wrap img {
           display: block;
@@ -1375,7 +1547,7 @@ export default function Home() {
           background: linear-gradient(
             120deg,
             transparent,
-            rgba(58, 160, 255, 0.45),
+            rgba(58, 160, 255, 0.3),
             transparent
           );
           transform: skewX(-20deg);
@@ -1434,6 +1606,19 @@ export default function Home() {
           to { --profile-angle: 360deg; }
         }
 
+                /* ---------------- Gold coin 3D background ---------------- */
+        .gold-coin-bg {
+          width: 260px;
+          height: 260px;
+          opacity: 0;
+          
+        }
+        @media (min-width: 768px) {
+          .gold-coin-bg { width: 380px; height: 380px; }
+        }
+        .gold-coin-bg canvas {
+          display: block;
+        }
         /* ---------------- Hero photo — octagon badge frame ---------------- */
         .hero-photo-frame {
           transition: filter 0.35s ease;
@@ -1449,23 +1634,23 @@ export default function Home() {
             transparent 100%
           );
           animation: rotate-profile-ring 4s linear infinite;
-          opacity: 0.85;
+          opacity: 1;
           transition: opacity 0.3s ease;
         }
         .hero-photo-frame:hover .hero-photo-glow {
-          opacity: 1;
+          opacity: 0.7;
           filter: brightness(1.2);
         }
         .hero-photo-frame:hover {
-          filter: drop-shadow(0 0 22px rgba(58,160,255,0.35));
+          filter: drop-shadow(0 0 22px rgba(58,160,255,0.18));
         }
         .profile-photo-wrap {
-          background: #0a1224;
-          box-shadow: 0 0 0 1px rgba(58,160,255,0.2);
+          background: #f5f6f8;
+          box-shadow: 0 0 0 1px rgba(58,160,255,0.15);
           transition: box-shadow 0.35s ease;
         }
         .profile-photo-wrap:hover {
-          box-shadow: 0 0 0 1px rgba(58,160,255,0.5), 0 0 26px rgba(58,160,255,0.35);
+          box-shadow: 0 0 0 1px rgba(58,160,255,0.4), 0 0 14px rgba(58,160,255,0.18);
         }
         .profile-img {
           filter: grayscale(0.15) contrast(1.05);
@@ -1508,8 +1693,8 @@ export default function Home() {
         .profile-scan {
           background: repeating-linear-gradient(
             0deg,
-            rgba(58,160,255,0.12) 0px,
-            rgba(58,160,255,0.12) 1px,
+            rgba(58,160,255,0.08) 0px,
+            rgba(58,160,255,0.08) 1px,
             transparent 1px,
             transparent 3px
           );
@@ -1529,6 +1714,8 @@ export default function Home() {
         @media (prefers-reduced-motion: reduce) {
           * { animation: none !important; transition: none !important; }
         }
+
+             
       `}</style>
     </div >
   );
