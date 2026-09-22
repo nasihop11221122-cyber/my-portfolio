@@ -2,7 +2,9 @@ import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import emailjs from "@emailjs/browser";
-import { ArrowUpRight, ArrowUp, Mail, Terminal } from "lucide-react";
+import { ArrowUpRight, ArrowUp, Mail, Terminal, } from "lucide-react";
+import { FaYoutube } from "react-icons/fa";
+
 import * as THREE from "three";
 gsap.registerPlugin(ScrollTrigger);
 
@@ -271,6 +273,7 @@ function glitchReveal(el, finalHTML) {
 ============================================================= */
 
 export default function Home() {
+  const [showLaunchPopup, setShowLaunchPopup] = useState(false);
   const rootRef = useRef(null);
   const canvasRef = useRef(null);
   const glowRef = useRef(null);
@@ -1143,15 +1146,29 @@ export default function Home() {
             <div className="project-image-overlay" />
 
             
-            <a  href={project.link}
-              target="_blank"
-              rel="noopener noreferrer"
-              onClick={(e) => e.stopPropagation()}
-              className="go-live-btn absolute left-1/2 top-1/2 z-10 flex items-center gap-1.5 whitespace-nowrap rounded-full border border-[#3aa0ff] bg-[#050a14]/85 px-3 py-1.5 font-mono text-[10px] font-semibold text-[#3aa0ff] backdrop-blur-sm sm:gap-2 sm:px-4 sm:py-2 sm:text-[11px]"
-            >
-              GO LIVE
-              <ArrowUpRight size={12} />
-            </a>
+            {project.idx === "ENTRY_01" ? (
+  <a  href={project.link}
+    target="_blank"
+    rel="noopener noreferrer"
+    onClick={(e) => e.stopPropagation()}
+    className="go-live-btn absolute left-1/2 top-1/2 z-10 flex items-center gap-1.5 whitespace-nowrap rounded-full border border-[#3aa0ff] bg-[#050a14]/85 px-3 py-1.5 font-mono text-[10px] font-semibold text-[#3aa0ff] backdrop-blur-sm sm:gap-2 sm:px-4 sm:py-2 sm:text-[11px]"
+  >
+    GO LIVE
+    <ArrowUpRight size={12} />
+  </a>
+) : (
+  <button
+    type="button"
+    onClick={(e) => {
+      e.stopPropagation();
+      setShowLaunchPopup(true);
+    }}
+    className="go-live-btn absolute left-1/2 top-1/2 z-10 flex items-center gap-1.5 whitespace-nowrap rounded-full border border-[#3aa0ff] bg-[#050a14]/85 px-3 py-1.5 font-mono text-[10px] font-semibold text-[#3aa0ff] backdrop-blur-sm sm:gap-2 sm:px-4 sm:py-2 sm:text-[11px]"
+  >
+    GO LIVE
+    <ArrowUpRight size={12} />
+  </button>
+)}
           </div>
 
           <span className="mb-2 block font-mono text-[10px] text-[#1c6fd1]">
@@ -1296,13 +1313,29 @@ export default function Home() {
         </div>
 
         <div className="mt-9 flex gap-3">
-          <span className="rounded-full border border-[rgba(28,111,209,0.25)] px-4 py-2 font-mono text-xs text-[#4b5563]">
-            GH
-          </span>
-          <span className="rounded-full border border-[rgba(28,111,209,0.25)] px-4 py-2 font-mono text-xs text-[#4b5563]">
-            IN
-          </span>
-        </div>
+  
+   
+  <a href="https://www.youtube.com/channel/UCPSvLDpVXuoGF7A4316n79A"
+  target="_blank"
+  rel="noopener noreferrer"
+  aria-label="YouTube"
+  className="flex h-10 w-10 items-center justify-center rounded-full border border-[rgba(28,111,209,0.25)] text-[#4b5563] transition-colors hover:border-[#3aa0ff] hover:text-[#3aa0ff]"
+>
+  <FaYoutube size={18} />
+</a>
+  
+    <a href="https://wa.me/923338974835"
+    target="_blank"
+    rel="noopener noreferrer"
+    aria-label="WhatsApp"
+    className="flex h-10 w-10 items-center justify-center rounded-full border border-[rgba(28,111,209,0.25)] text-[#4b5563] transition-colors hover:border-[#3aa0ff] hover:text-[#3aa0ff]"
+  >
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z" />
+      <path d="M12.001 2C6.478 2 2 6.478 2 12c0 1.876.52 3.63 1.42 5.13L2 22l4.99-1.396A9.94 9.94 0 0012.001 22C17.523 22 22 17.523 22 12S17.523 2 12.001 2zm0 18.09a8.06 8.06 0 01-4.343-1.264l-.312-.185-3.033.848.833-2.955-.202-.31A8.05 8.05 0 013.91 12c0-4.463 3.63-8.09 8.091-8.09 4.462 0 8.09 3.627 8.09 8.09 0 4.462-3.628 8.09-8.09 8.09z" />
+    </svg>
+  </a>
+</div>
       </div>
 
       <form onSubmit={handleSubmit} className="flex flex-col gap-5" noValidate>
@@ -1435,6 +1468,30 @@ export default function Home() {
 >
   <ArrowUp size={18} />
 </button>
+{showLaunchPopup && (
+  <div
+    className="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 px-4 py-6"
+    onClick={() => setShowLaunchPopup(false)}
+  >
+    <div
+      onClick={(e) => e.stopPropagation()}
+      className="w-full max-w-[280px] max-h-[90vh] overflow-y-auto rounded-lg border border-[#3aa0ff] bg-[#ffffff] p-5 text-center shadow-xl xs:max-w-xs sm:max-w-sm sm:p-8"
+    >
+      <h3 className="mb-2 font-mono text-base font-bold text-[#0f172a] sm:text-lg">
+        Launching Soon
+      </h3>
+      <p className="mb-6 text-sm leading-6 text-[#4b5563]">
+        This project isn't live yet — check back soon.
+      </p>
+      <button
+        onClick={() => setShowLaunchPopup(false)}
+        className="w-full rounded-full border border-[#3aa0ff] bg-[#3aa0ff] px-5 py-2.5 font-mono text-xs font-semibold text-[#050a14] transition-colors hover:bg-[#6cc0ff] sm:w-auto"
+      >
+        CLOSE
+      </button>
+    </div>
+  </div>
+)}
 
       <style>{`
         html { scroll-behavior: smooth; }
