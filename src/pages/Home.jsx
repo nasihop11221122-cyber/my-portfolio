@@ -1,9 +1,11 @@
 import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import emailjs from "@emailjs/browser";
 import { ArrowUpRight, ArrowUp, Mail, Terminal } from "lucide-react";
 import * as THREE from "three";
 gsap.registerPlugin(ScrollTrigger);
+
 
 /* Cut-corner "badge" shape used for the hero photo — distinct from the
    plain circle used in the About section. */
@@ -26,6 +28,7 @@ const MARQUEE_ITEMS = [
   "GRAPHQL",
   "DOCKER",
 ];
+
 const SKILLS = [
   {
     title: "Thumbnail Designing",
@@ -59,6 +62,7 @@ const STATS = [
   { count: 99, suffix: ".9%", label: "UPTIME AVG", decimal: true },
   { count: 12, suffix: "k", label: "COMMITS / YR" },
 ];
+
 
 const SKILL_GROUPS = [
   {
@@ -424,7 +428,7 @@ export default function Home() {
           .to(".nav-bar", { y: 0, opacity: 1, duration: 0.7 })
           .to(".terminal-line", { opacity: 1, duration: 0.3 }, "-=0.2")
           .add(() =>
-            glitchReveal(headlineRef.current, "RHIM KHAN")
+            glitchReveal(headlineRef.current, "RAHIM KHAN")
           )
           .to(".lede", { y: 0, opacity: 1, duration: 0.6 }, "+=0.5")
           .to(".cta-row", { y: 0, opacity: 1, duration: 0.6 }, "-=0.4")
@@ -660,8 +664,6 @@ export default function Home() {
       cancelAnimationFrame(rafId);
       geometry.dispose();
       edgeMaterial.dispose();
-      faceMaterial.dispose();
-      faceTexture.dispose();
       renderer.dispose();
       container.removeChild(renderer.domElement);
     };
@@ -701,20 +703,36 @@ export default function Home() {
     setFormErrors(errors);
     return Object.keys(errors).length === 0;
   };
+  const [menuOpen, setMenuOpen] = useState(false);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    setFormStatus("");
-    if (!validate()) return;
+ const handleSubmit = async (e) => {
+  e.preventDefault();
+  setFormStatus("");
+  if (!validate()) return;
 
-    setSubmitting(true);
-    // Simulated async submit — wire this up to a real endpoint when ready.
-    setTimeout(() => {
-      setSubmitting(false);
-      setFormStatus("Message received — I'll reply within 24h.");
-      setFormData({ name: "", email: "", message: "" });
-    }, 1400);
-  };
+  setSubmitting(true);
+
+  try {
+    await emailjs.send(
+      import.meta.env.VITE_EMAILJS_SERVICE_ID,
+      import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
+      {
+        name: formData.name,
+        email: formData.email,
+        message: formData.message,
+      },
+      import.meta.env.VITE_EMAILJS_PUBLIC_KEY
+    );
+
+    setFormStatus("Message received — I'll reply within 24h.");
+    setFormData({ name: "", email: "", message: "" });
+  } catch (error) {
+    console.error("EmailJS error:", error);
+    setFormStatus("Something went wrong. Please email me directly.");
+  } finally {
+    setSubmitting(false);
+  }
+};
 
   const setMagneticRef = (el, index) => {
     magneticRefs.current[index] = el;
@@ -749,238 +767,276 @@ export default function Home() {
 
       <main className="relative z-[3]">
         {/* ================= NAV ================= */}
-        <nav className="nav-bar fixed left-0 right-0 top-0 z-50 grid grid-cols-[auto_1fr_auto] items-center gap-4 border-b border-[rgba(28,111,209,0.15)] bg-[#ffffff]/80 px-5 py-3 font-mono text-[11px] tracking-wide text-[#4b5563] backdrop-blur-md sm:px-8 sm:text-xs">
-          <a href="#" className="flex items-center flex-shrink-0" aria-label="RK Home">
-            <svg width="46" height="46" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <rect x="1.5" y="1.5" width="45" height="45" rx="10" stroke="#3aa0ff" strokeWidth="1.5" fill="rgba(58,160,255,0.08)" />
-              <path d="M13 33V15h7.8c3.4 0 5.9 2.2 5.9 5.4 0 2.3-1.3 4.1-3.4 4.9L27 33h-4l-3.6-7.4h-2.6V33h-3.8z" fill="#3aa0ff" />
-              <path d="M16.8 18.2v4.6h3.6c1.6 0 2.7-1 2.7-2.3s-1.1-2.3-2.7-2.3h-3.6z" fill="#ffffff" />
-              <path d="M28.5 33V15h3.8v7.6l6.3-7.6h4.5l-7 8.2L43.3 33h-4.6l-5.1-7.3-1.3 1.5V33h-3.8z" fill="#8b6bff" />
-            </svg>
-          </a>
+        
 
-         <div className="hidden items-center justify-center gap-7 md:flex">
-  <a href="#" className="nav-link-electric">
-    Home
+{/* ================= NAV ================= */}
+<nav className="nav-bar fixed left-0 right-0 top-0 z-50 flex items-center justify-between gap-4 border-b border-[rgba(28,111,209,0.15)] bg-[#ffffff]/80 px-4 py-3 font-mono text-[11px] tracking-wide text-[#4b5563] backdrop-blur-md sm:px-8 sm:text-xs">
+  <a href="#" className="flex items-center flex-shrink-0" aria-label="RK Home">
+    <svg
+      width="40"
+      height="40"
+      viewBox="0 0 48 48"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      className="sm:w-[46px] sm:h-[46px]"
+    >
+      <rect x="1.5" y="1.5" width="45" height="45" rx="10" stroke="#3aa0ff" strokeWidth="1.5" fill="rgba(58,160,255,0.08)" />
+      <path d="M13 33V15h7.8c3.4 0 5.9 2.2 5.9 5.4 0 2.3-1.3 4.1-3.4 4.9L27 33h-4l-3.6-7.4h-2.6V33h-3.8z" fill="#3aa0ff" />
+      <path d="M16.8 18.2v4.6h3.6c1.6 0 2.7-1 2.7-2.3s-1.1-2.3-2.7-2.3h-3.6z" fill="#ffffff" />
+      <path d="M28.5 33V15h3.8v7.6l6.3-7.6h4.5l-7 8.2L43.3 33h-4.6l-5.1-7.3-1.3 1.5V33h-3.8z" fill="#8b6bff" />
+    </svg>
   </a>
-  <a href="#about" className="nav-link-electric">
-    About
-  </a>
-  <a href="#skills" className="nav-link-electric">
-    Skills
-  </a>
-  <a href="#projects" className="nav-link-electric">
-    Projects
-  </a>
-  <a href="#contact" className="nav-link-electric">
-    Contact
-  </a>
-</div>
-           <a href="#timeline"
-            className="justify-self-end flex items-center gap-1.5 rounded-full border border-[#1c6fd1] px-4 py-2 font-mono text-[11px] font-semibold text-[#1c6fd1] transition-colors hover:bg-[rgba(28,111,209,0.08)]"
-          >
-            MY JOURNEY
-          </a>
 
+  {/* Desktop links */}
+  <div className="hidden items-center justify-center gap-5 md:flex lg:gap-7">
+    <a href="#" className="nav-link-electric">Home</a>
+    <a href="#about" className="nav-link-electric">About</a>
+    <a href="#skills" className="nav-link-electric">Skills</a>
+    <a href="#projects" className="nav-link-electric">Projects</a>
+    <a href="#contact" className="nav-link-electric">Contact</a>
+  </div>
 
-        </nav>
+  {/* Desktop CTA */}
+  
+   <a href="#timeline"
+    className="hidden md:flex items-center gap-1.5 rounded-full border border-[#1c6fd1] px-4 py-2 font-mono text-[11px] font-semibold text-[#1c6fd1] transition-colors hover:bg-[rgba(28,111,209,0.08)]"
+  >
+    MY JOURNEY
+  </a>
+
+  {/* Mobile hamburger toggle */}
+  <button
+    onClick={() => setMenuOpen((prev) => !prev)}
+    className="flex md:hidden items-center justify-center rounded-md p-2 text-[#1c6fd1]"
+    aria-label="Toggle menu"
+    aria-expanded={menuOpen}
+  >
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      {menuOpen ? (
+        <path d="M6 6l12 12M6 18L18 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+      ) : (
+        <>
+          <path d="M4 6h16" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+          <path d="M4 12h16" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+          <path d="M4 18h16" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+        </>
+      )}
+    </svg>
+  </button>
+
+  {/* Mobile dropdown menu */}
+  {menuOpen && (
+    <div className="absolute left-0 right-0 top-full flex flex-col gap-1 border-b border-[rgba(28,111,209,0.15)] bg-white/95 px-5 py-4 backdrop-blur-md md:hidden">
+      <a href="#" onClick={() => setMenuOpen(false)} className="nav-link-electric py-2">Home</a>
+      <a href="#about" onClick={() => setMenuOpen(false)} className="nav-link-electric py-2">About</a>
+      <a href="#skills" onClick={() => setMenuOpen(false)} className="nav-link-electric py-2">Skills</a>
+      <a href="#projects" onClick={() => setMenuOpen(false)} className="nav-link-electric py-2">Projects</a>
+      <a href="#contact" onClick={() => setMenuOpen(false)} className="nav-link-electric py-2">Contact</a>
+      
+       <a href="#timeline"
+        onClick={() => setMenuOpen(false)}
+        className="mt-2 flex w-fit items-center gap-1.5 rounded-full border border-[#1c6fd1] px-4 py-2 font-mono text-[11px] font-semibold text-[#1c6fd1]"
+      >
+        MY JOURNEY
+      </a>
+    </div>
+  )}
+</nav>
 
         {/* ================= HERO ================= */}
-        <section className="flex min-h-screen flex-col justify-center px-5 pt-28 sm:px-8 md:px-10">
-          <div className="mx-auto grid w-full max-w-[1180px] gap-12 lg:grid-cols-[1fr_300px] lg:items-center lg:gap-16">
-            <div className="w-full max-w-[980px]">
+       <section className="flex min-h-screen flex-col justify-center px-5 pt-24 sm:px-8 sm:pt-28 md:px-10">
+  <div className="mx-auto grid w-full max-w-[1180px] gap-10 lg:grid-cols-[1fr_300px] lg:items-center lg:gap-16">
+    <div className="w-full max-w-[980px] text-center lg:text-left">
 
+      <h1
+        ref={headlineRef}
+        className="mb-6 min-h-[1.1em] font-mono text-[15vw] font-extrabold leading-[0.98] tracking-tight sm:mb-8 sm:text-[11vw] md:text-[8vw] lg:text-[5.6rem]"
+        style={{ textShadow: "0 0 24px rgba(58,160,255,0.08)" }}
+      >
+        RAHIM KHAN
+      </h1>
 
-              <h1
-                ref={headlineRef}
-                className="mb-6 min-h-[1.1em] font-mono text-[13vw] font-extrabold leading-[0.98] tracking-tight sm:mb-8 sm:text-[11vw] md:text-[8vw] lg:text-[5.6rem]"
-                style={{ textShadow: "0 0 24px rgba(58,160,255,0.08)" }}
-              >
-                RHIM KHAN
-              </h1>
+      <p className="lede mx-auto mb-9 max-w-xl text-sm leading-7 text-[#4b5563] sm:mb-11 sm:text-base md:text-lg md:leading-8 lg:mx-0">
+        I build modern digital products with code, motion and carefully
+        engineered interfaces — from frontend experiences to backend
+        systems.
+      </p>
 
-              <p className="lede mb-9 max-w-xl text-sm leading-7 text-[#4b5563] sm:mb-11 sm:text-base md:text-lg md:leading-8">
-                I build modern digital products with code, motion and carefully
-                engineered interfaces — from frontend experiences to backend
-                systems.
-              </p>
+      <div className="cta-row flex flex-wrap items-center justify-center gap-3 lg:justify-start">
+        
+         <a href="#about"
+          ref={(el) => setMagneticRef(el, 0)}
+          className="flex items-center gap-2 rounded-[3px] border border-[#3aa0ff] bg-[#3aa0ff] px-5 py-3.5 font-mono text-xs font-semibold text-[#050a14] transition-colors hover:bg-[#6cc0ff] sm:px-6"
+        >
+          ABOUT ME
+          <ArrowUpRight size={14} />
+        </a>
+        
+         <a href="#contact"
+          ref={(el) => setMagneticRef(el, 1)}
+          className="flex items-center gap-2 rounded-[3px] border border-[#1c6fd1] px-5 py-3.5 font-mono text-xs font-semibold text-[#1c6fd1] transition-colors hover:bg-[rgba(28,111,209,0.08)] sm:px-6"
+        >
+          CONTACT ME
+          <Mail size={14} />
+        </a>
+      </div>
 
-              <div className="cta-row flex flex-wrap items-center gap-3">
-                <a
-                  href="#about"
-                  ref={(el) => setMagneticRef(el, 0)}
-                  className="flex items-center gap-2 rounded-[3px] border border-[#3aa0ff] bg-[#3aa0ff] px-5 py-3.5 font-mono text-xs font-semibold text-[#050a14] transition-colors hover:bg-[#6cc0ff] sm:px-6"
-                >
-                  ABOUT ME
-                  <ArrowUpRight size={14} />
-                </a>
-                <a
-                  href="#contact"
-                  ref={(el) => setMagneticRef(el, 1)}
-                  className="flex items-center gap-2 rounded-[3px] border border-[#1c6fd1] px-5 py-3.5 font-mono text-xs font-semibold text-[#1c6fd1] transition-colors hover:bg-[rgba(28,111,209,0.08)] sm:px-6"
-                >
-                  CONTACT ME
-                  <Mail size={14} />
-                </a>
-              </div>
+    </div>
 
+    <div className="hero-photo-frame relative mx-auto h-64 w-48 flex-shrink-0 xs:h-72 xs:w-56 sm:h-96 sm:w-72 lg:mx-0 lg:ml-auto lg:h-[26rem] lg:w-80">
+      <div
+        className="hero-photo-glow absolute inset-0"
+        style={{ clipPath: OCTAGON_CLIP }}
+      />
+      <div
+        className="profile-photo-wrap absolute inset-[5px] overflow-hidden"
+        style={{ clipPath: OCTAGON_CLIP }}
+      >
+        <img
+          src="https://res.cloudinary.com/gp4dzet9/image/upload/f_auto,q_auto/IMG_0578"
+          alt="RK"
+          className="profile-img relative z-[3] h-full w-full object-cover"
+        />
+        <img
+          src="https://i.pravatar.cc/400?img=13"
+          alt=""
+          aria-hidden="true"
+          className="profile-img-r pointer-events-none absolute inset-0 z-[2] h-full w-full object-cover"
+        />
+        <img
+          src="https://i.pravatar.cc/400?img=13"
+          alt=""
+          aria-hidden="true"
+          className="profile-img-b pointer-events-none absolute inset-0 z-[1] h-full w-full object-cover"
+        />
+        <div className="profile-scan pointer-events-none absolute inset-0 z-[4]" />
+      </div>
+    </div>
+  </div>
 
-            </div>
-
-            <div className="hero-photo-frame relative mx-auto h-80 w-60 flex-shrink-0 sm:h-96 sm:w-72 lg:mx-0 lg:ml-auto lg:h-[26rem] lg:w-80">
-              <div
-                className="hero-photo-glow absolute inset-0"
-                style={{ clipPath: OCTAGON_CLIP }}
-              />
-              <div
-                className="profile-photo-wrap absolute inset-[5px] overflow-hidden"
-                style={{ clipPath: OCTAGON_CLIP }}
-              >
-                {/* TODO: swap for a real photo */}
-                <img
-                  src="https://res.cloudinary.com/gp4dzet9/image/upload/f_auto,q_auto/IMG_0578"
-                  alt="RK"
-                  className="profile-img relative z-[3] h-full w-full object-cover"
-                />
-                <img
-                  src="https://i.pravatar.cc/400?img=13"
-                  alt=""
-                  aria-hidden="true"
-                  className="profile-img-r pointer-events-none absolute inset-0 z-[2] h-full w-full object-cover"
-                />
-                <img
-                  src="https://i.pravatar.cc/400?img=13"
-                  alt=""
-                  aria-hidden="true"
-                  className="profile-img-b pointer-events-none absolute inset-0 z-[1] h-full w-full object-cover"
-                />
-                <div className="profile-scan pointer-events-none absolute inset-0 z-[4]" />
-              </div>
-            </div>
-          </div>
-
-          <div className="mx-auto mt-10 flex w-full max-w-[1180px] items-center gap-2 font-mono text-[9px] tracking-wide text-[#94a3b8] sm:mt-14">
-            <Terminal size={12} />
-            SCROLL TO EXPLORE
-          </div>
-        </section>
+  <div className="mx-auto mt-10 flex w-full max-w-[1180px] items-center justify-center gap-2 font-mono text-[9px] tracking-wide text-[#94a3b8] sm:mt-14 lg:justify-start">
+    <Terminal size={12} />
+    SCROLL TO EXPLORE
+  </div>
+</section>
 
         {/* ================= MARQUEE ================= */}
-        <div className="overflow-hidden border-y border-[rgba(28,111,209,0.15)] py-5">
-          <div
-            className="flex w-max gap-8 sm:gap-12"
-            style={{ animation: "marquee 28s linear infinite" }}
-          >
-            {[...MARQUEE_ITEMS, ...MARQUEE_ITEMS].map((item, i) => (
-              <span
-                key={i}
-                className="flex items-center gap-3 whitespace-nowrap font-mono text-xs text-[#94a3b8] sm:text-sm"
-              >
-                {item} <span className="text-[#1c6fd1]">◆</span>
-              </span>
-            ))}
+        <div className="overflow-hidden border-y border-[rgba(28,111,209,0.15)] py-4 sm:py-5">
+  <div
+    className="flex w-max gap-6 sm:gap-8 md:gap-12"
+    style={{ animation: "marquee 28s linear infinite" }}
+  >
+    {[...MARQUEE_ITEMS, ...MARQUEE_ITEMS].map((item, i) => (
+      <span
+        key={i}
+        className="flex items-center gap-2 whitespace-nowrap font-mono text-[11px] text-[#94a3b8] sm:gap-3 sm:text-sm"
+      >
+        {item} <span className="text-[#1c6fd1]">◆</span>
+      </span>
+    ))}
+  </div>
+</div>
+
+        {/* ================= ABOUT ================= */}
+           <section id="about" className="relative overflow-hidden px-5 py-20 sm:px-8 sm:py-24 md:px-10 md:py-36">
+  {/* ---- Ambient glow blobs ---- */}
+  <div
+    className="pointer-events-none absolute -left-40 top-10 h-[280px] w-[280px] rounded-full opacity-20 blur-[90px] sm:h-[420px] sm:w-[420px] sm:blur-[110px]"
+    style={{ background: "radial-gradient(circle, rgba(58,160,255,0.18), transparent 70%)" }}
+    aria-hidden="true"
+  />
+  <div
+    className="pointer-events-none absolute -right-32 bottom-0 h-[260px] w-[260px] rounded-full opacity-15 blur-[90px] sm:h-[380px] sm:w-[380px] sm:blur-[110px]"
+    style={{ background: "radial-gradient(circle, rgba(139,107,255,0.18), transparent 70%)" }}
+    aria-hidden="true"
+  />
+
+  <div className="relative z-10 mx-auto max-w-[1200px]">
+    <div className="reveal-block grid grid-cols-1 gap-14 md:grid-cols-2 md:items-center md:gap-20">
+      {/* ================= LEFT — CONTENT ================= */}
+      <div className="text-center md:text-left">
+        <span className="about-typewriter mb-5 inline-block font-mono text-sm font-semibold tracking-[0.25em] text-[#1c6fd1] sm:text-base">
+          ABOUT ME
+        </span>
+        <h2 className="mb-6 text-[7vw] font-bold leading-[1.15] text-[#0f172a] xs:text-3xl sm:text-4xl md:text-[2.75rem]">
+          Turning Ideas Into{" "}
+          <span className="bg-gradient-to-r from-[#3aa0ff] to-[#8b6bff] bg-clip-text text-transparent">
+            Digital Experiences.
+          </span>
+        </h2>
+        <p className="mx-auto mb-10 max-w-md text-sm leading-7 text-[#4b5563] sm:text-base sm:leading-8 md:mx-0">
+          I'm a passionate Web Developer focused on building modern,
+          responsive, and high-quality web experiences. I enjoy
+          turning ideas into clean, interactive, and user-friendly
+          digital products.
+        </p>
+
+        
+        <a  href="#projects"
+          className="group inline-flex items-center gap-2 rounded-full border border-[#3aa0ff] bg-[#3aa0ff] px-6 py-3.5 font-mono text-xs font-semibold text-[#050a14] transition-all duration-300 hover:gap-3 hover:bg-[#6cc0ff]"
+        >
+          VIEW MY WORK
+          <ArrowUpRight size={14} className="transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+        </a>
+      </div>
+
+      {/* ================= RIGHT — VISUAL ================= */}
+      <div className="relative mx-auto h-[320px] w-full max-w-[380px] sm:h-[440px] sm:max-w-[440px]">
+        {/* Glass code-editor card */}
+        <div className="about-glass-card absolute inset-0 m-auto flex h-[210px] w-[260px] flex-col overflow-hidden rounded-2xl border border-[rgba(28,111,209,0.22)] bg-[rgba(245,246,248,0.75)] shadow-[0_10px_30px_rgba(0,0,0,0.08)] backdrop-blur-xl sm:h-[270px] sm:w-[330px]">
+          <div className="flex items-center gap-1.5 border-b border-[rgba(28,111,209,0.15)] px-4 py-3">
+            <span className="h-2.5 w-2.5 rounded-full bg-[#ff5d5d]/70" />
+            <span className="h-2.5 w-2.5 rounded-full bg-[#ffd166]/70" />
+            <span className="h-2.5 w-2.5 rounded-full bg-[#3aa0ff]/70" />
+            <span className="ml-3 font-mono text-[10px] text-[#6b7280]">dev.tsx</span>
+          </div>
+          <div className="flex-1 px-5 py-4 font-mono text-[10px] leading-6 text-[#334155] sm:text-xs">
+            <div><span className="text-[#8b6bff]">const</span> <span className="text-[#3aa0ff]">build</span> = () =&gt; {"{"}</div>
+            <div className="pl-4 text-[#6b7280]">// crafting clean UI</div>
+            <div className="pl-4"><span className="text-[#3aa0ff]">return</span> &lt;<span className="text-[#8b6bff]">Experience</span> /&gt;;</div>
+            <div>{"}"}</div>
+            <div className="mt-2 inline-block h-4 w-1.5 animate-pulse bg-[#3aa0ff]" />
           </div>
         </div>
 
-        {/* ================= ABOUT ================= */}
-                <section id="about" className="relative overflow-hidden px-5 py-24 sm:px-8 md:px-10 md:py-36">
-          {/* ---- Ambient glow blobs ---- */}
-          <div
-            className="pointer-events-none absolute -left-40 top-10 h-[420px] w-[420px] rounded-full opacity-20 blur-[110px]"
-            style={{ background: "radial-gradient(circle, rgba(58,160,255,0.18), transparent 70%)" }}
-            aria-hidden="true"
-          />
-          <div
-            className="pointer-events-none absolute -right-32 bottom-0 h-[380px] w-[380px] rounded-full opacity-15 blur-[110px]"
-            style={{ background: "radial-gradient(circle, rgba(139,107,255,0.18), transparent 70%)" }}
-            aria-hidden="true"
-          />
-
-          <div className="relative z-10 mx-auto max-w-[1200px]">
-            <div className="reveal-block grid grid-cols-1 gap-16 md:grid-cols-2 md:items-center md:gap-20">
-              {/* ================= LEFT — CONTENT ================= */}
-              <div>
-                <span className="about-typewriter mb-5 inline-block font-mono text-sm font-semibold tracking-[0.25em] text-[#1c6fd1] sm:text-base">
-   ABOUT ME
-</span>
-                <h2 className="mb-6 text-3xl font-bold leading-[1.15] text-[#0f172a] sm:text-4xl md:text-[2.75rem]">
-                  Turning Ideas Into{" "}
-                  <span className="bg-gradient-to-r from-[#3aa0ff] to-[#8b6bff] bg-clip-text text-transparent">
-                    Digital Experiences.
-                  </span>
-                </h2>
-                <p className="mb-10 max-w-md text-sm leading-7 text-[#4b5563] sm:text-base sm:leading-8">
-                  I'm a passionate Web Developer focused on building modern,
-                  responsive, and high-quality web experiences. I enjoy
-                  turning ideas into clean, interactive, and user-friendly
-                  digital products.
-                </p>
-                
-                 <a href="#projects"
-                  className="group inline-flex items-center gap-2 rounded-full border border-[#3aa0ff] bg-[#3aa0ff] px-6 py-3.5 font-mono text-xs font-semibold text-[#050a14] transition-all duration-300 hover:gap-3 hover:bg-[#6cc0ff]"
-                >
-                  VIEW MY WORK
-                  <ArrowUpRight size={14} className="transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-                </a>
-              </div>
-
-              {/* ================= RIGHT — VISUAL ================= */}
-              <div className="relative mx-auto h-[380px] w-full max-w-[440px] sm:h-[440px]">
-                {/* Glass code-editor card */}
-                <div className="about-glass-card absolute inset-0 m-auto flex h-[240px] w-[300px] flex-col overflow-hidden rounded-2xl border border-[rgba(28,111,209,0.22)] bg-[rgba(245,246,248,0.75)] shadow-[0_10px_30px_rgba(0,0,0,0.08)] backdrop-blur-xl sm:h-[270px] sm:w-[330px]">
-                  <div className="flex items-center gap-1.5 border-b border-[rgba(28,111,209,0.15)] px-4 py-3">
-                    <span className="h-2.5 w-2.5 rounded-full bg-[#ff5d5d]/70" />
-                    <span className="h-2.5 w-2.5 rounded-full bg-[#ffd166]/70" />
-                    <span className="h-2.5 w-2.5 rounded-full bg-[#3aa0ff]/70" />
-                    <span className="ml-3 font-mono text-[10px] text-[#6b7280]">dev.tsx</span>
-                  </div>
-                  <div className="flex-1 px-5 py-4 font-mono text-[11px] leading-6 text-[#334155] sm:text-xs">
-                    <div><span className="text-[#8b6bff]">const</span> <span className="text-[#3aa0ff]">build</span> = () =&gt; {"{"}</div>
-                    <div className="pl-4 text-[#6b7280]">// crafting clean UI</div>
-                    <div className="pl-4"><span className="text-[#3aa0ff]">return</span> &lt;<span className="text-[#8b6bff]">Experience</span> /&gt;;</div>
-                    <div>{"}"}</div>
-                    <div className="mt-2 inline-block h-4 w-1.5 animate-pulse bg-[#3aa0ff]" />
-                  </div>
-                </div>
-
-                {/* Floating tech badges */}
-                <span className="about-badge absolute left-2 top-4 rounded-full border border-[rgba(28,111,209,0.25)] bg-[#f5f6f8]/95 px-3 py-1.5 font-mono text-[10px] font-semibold text-[#1c6fd1] shadow-md backdrop-blur-sm">
-                  React
-                </span>
-                <span className="about-badge about-badge-delay-1 absolute right-0 top-14 rounded-full border border-[rgba(139,107,255,0.28)] bg-[#f5f6f8]/95 px-3 py-1.5 font-mono text-[10px] font-semibold text-[#8b6bff] shadow-md backdrop-blur-sm">
-                  Node.js
-                </span>
-                <span className="about-badge about-badge-delay-2 absolute -left-4 bottom-20 rounded-full border border-[rgba(28,111,209,0.25)] bg-[#f5f6f8]/95 px-3 py-1.5 font-mono text-[10px] font-semibold text-[#1c6fd1] shadow-md backdrop-blur-sm">
-                  MongoDB
-                </span>
-                <span className="about-badge about-badge-delay-3 absolute right-2 bottom-6 rounded-full border border-[rgba(139,107,255,0.28)] bg-[#f5f6f8]/95 px-3 py-1.5 font-mono text-[10px] font-semibold text-[#8b6bff] shadow-md backdrop-blur-sm">
-                  Tailwind CSS
-                </span>
-                <span className="about-badge about-badge-delay-4 absolute left-10 -top-2 rounded-full border border-[rgba(28,111,209,0.25)] bg-[#f5f6f8]/95 px-3 py-1.5 font-mono text-[10px] font-semibold text-[#1c6fd1] shadow-md backdrop-blur-sm">
-                  JavaScript
-                </span>
-                <span className="about-badge about-badge-delay-2 absolute -right-3 top-1/2 rounded-full border border-[rgba(139,107,255,0.28)] bg-[#f5f6f8]/95 px-3 py-1.5 font-mono text-[10px] font-semibold text-[#8b6bff] shadow-md backdrop-blur-sm">
-                  Framer Motion
-                </span>
-              </div>
-            </div>
-          </div>
-        </section>
+        {/* Floating tech badges — pulled inward on mobile, spread out from sm: */}
+        <span className="about-badge absolute left-4 top-2 rounded-full border border-[rgba(28,111,209,0.25)] bg-[#f5f6f8]/95 px-2.5 py-1 font-mono text-[9px] font-semibold text-[#1c6fd1] shadow-md backdrop-blur-sm sm:left-2 sm:top-4 sm:px-3 sm:py-1.5 sm:text-[10px]">
+          React
+        </span>
+        <span className="about-badge about-badge-delay-1 absolute right-2 top-12 rounded-full border border-[rgba(139,107,255,0.28)] bg-[#f5f6f8]/95 px-2.5 py-1 font-mono text-[9px] font-semibold text-[#8b6bff] shadow-md backdrop-blur-sm sm:right-0 sm:top-14 sm:px-3 sm:py-1.5 sm:text-[10px]">
+          Node.js
+        </span>
+        <span className="about-badge about-badge-delay-2 absolute left-1 bottom-16 rounded-full border border-[rgba(28,111,209,0.25)] bg-[#f5f6f8]/95 px-2.5 py-1 font-mono text-[9px] font-semibold text-[#1c6fd1] shadow-md backdrop-blur-sm sm:-left-4 sm:bottom-20 sm:px-3 sm:py-1.5 sm:text-[10px]">
+          MongoDB
+        </span>
+        <span className="about-badge about-badge-delay-3 absolute right-4 bottom-4 rounded-full border border-[rgba(139,107,255,0.28)] bg-[#f5f6f8]/95 px-2.5 py-1 font-mono text-[9px] font-semibold text-[#8b6bff] shadow-md backdrop-blur-sm sm:right-2 sm:bottom-6 sm:px-3 sm:py-1.5 sm:text-[10px]">
+          Tailwind CSS
+        </span>
+        <span className="about-badge about-badge-delay-4 absolute left-14 top-0 rounded-full border border-[rgba(28,111,209,0.25)] bg-[#f5f6f8]/95 px-2.5 py-1 font-mono text-[9px] font-semibold text-[#1c6fd1] shadow-md backdrop-blur-sm sm:left-10 sm:-top-2 sm:px-3 sm:py-1.5 sm:text-[10px]">
+          JavaScript
+        </span>
+        <span className="about-badge about-badge-delay-2 absolute right-0 top-1/2 rounded-full border border-[rgba(139,107,255,0.28)] bg-[#f5f6f8]/95 px-2.5 py-1 font-mono text-[9px] font-semibold text-[#8b6bff] shadow-md backdrop-blur-sm sm:-right-3 sm:px-3 sm:py-1.5 sm:text-[10px]">
+          Framer Motion
+        </span>
+      </div>
+    </div>
+  </div>
+</section>
 
         <hr className="border-t border-[rgba(28,111,209,0.15)]" />
 
         
         
 {/* ================= SKILLS ================= */}
-<section id="skills" className="px-5 py-24 sm:px-8 md:px-10 md:py-36">
+<section id="skills" className="px-5 py-20 sm:px-8 sm:py-24 md:px-10 md:py-36">
   <div className="mx-auto max-w-[1100px]">
     <span className="mb-4 block font-mono text-[11px] tracking-wide text-[#1c6fd1]">
       // 02 — CAPABILITIES
     </span>
-    <h2 className="mb-6 max-w-lg text-3xl font-bold leading-tight sm:text-4xl md:text-5xl">
+    <h2 className="mb-6 max-w-lg text-[8vw] font-bold leading-tight xs:text-3xl sm:text-4xl md:text-5xl">
       What I'm Actually Good At.
     </h2>
-    <p className="mb-12 max-w-lg text-sm leading-7 text-[#4b5563] sm:mb-16 sm:text-base">
+    <p className="mb-10 max-w-lg text-sm leading-7 text-[#4b5563] sm:mb-16 sm:text-base">
       A quick visual look at the skills I bring to every project.
     </p>
 
@@ -1014,110 +1070,111 @@ export default function Home() {
         <hr className="border-t border-[rgba(28,111,209,0.15)]" />
 
         {/* ================= TIMELINE ================= */}
-        <section id="timeline" className="px-5 py-24 sm:px-8 md:px-10 md:py-36">
-          <div className="mx-auto max-w-[1100px]">
-            <span className="mb-4 block font-mono text-[11px] tracking-wide text-[#1c6fd1]">
-              // 03 —My  Journey
-            </span>
-            <h2 className="mb-6 max-w-lg text-3xl font-bold leading-tight sm:text-4xl md:text-5xl">
-              My Education Journey
-            </h2>
-            <p className="mb-12 max-w-lg text-sm leading-7 text-[#4b5563] sm:mb-16 sm:text-base">
-              The short version of my academic path — the degrees, the courses,
-               and the milestones that shaped where I am today.
-            </p>
+       <section id="timeline" className="px-5 py-20 sm:px-8 sm:py-24 md:px-10 md:py-36">
+  <div className="mx-auto max-w-[1100px]">
+    <span className="mb-4 block font-mono text-[11px] tracking-wide text-[#1c6fd1]">
+      // 03 — My Journey
+    </span>
+    <h2 className="mb-6 max-w-lg text-[8vw] font-bold leading-tight xs:text-3xl sm:text-4xl md:text-5xl">
+      My Education Journey
+    </h2>
+    <p className="mb-10 max-w-lg text-sm leading-7 text-[#4b5563] sm:mb-16 sm:text-base">
+      The short version of my academic path — the degrees, the courses,
+      and the milestones that shaped where I am today.
+    </p>
 
-            <div className="relative reveal-block pl-7">
-              <div className="absolute bottom-1.5 left-1 top-1.5 w-px bg-[rgba(28,111,209,0.25)]" />
-              {TIMELINE.map((item, i) => (
-               <div
-  key={item.title}
-  className={`reveal relative ${i === TIMELINE.length - 1 ? "" : "pb-14 sm:pb-16"}`}
->
-                  <span
-                    className="absolute -left-7 top-1 h-2.5 w-2.5 rounded-full bg-[#3aa0ff]"
-                    style={{
-                      boxShadow:
-                        "0 0 0 4px #ffffff, 0 0 0 5px rgba(58,160,255,0.22)",
-                    }}
-                  />
-                  <div className="mb-2 font-mono text-[11px] text-[#1c6fd1]">
-                    {item.meta}
-                  </div>
-                  <h4 className="mb-2 text-base font-semibold text-[#0f172a] sm:text-lg">
-                    {item.title}
-                  </h4>
-                  <p className="max-w-xl text-sm leading-7 text-[#4b5563]">
-                    {item.body}
-                  </p>
-                </div>
-              ))}
-            </div>
+    <div className="relative reveal-block pl-6 sm:pl-7">
+      <div className="absolute bottom-1.5 left-1 top-1.5 w-px bg-[rgba(28,111,209,0.25)]" />
+      {TIMELINE.map((item, i) => (
+        <div
+          key={item.title}
+          className={`reveal relative ${i === TIMELINE.length - 1 ? "" : "pb-12 sm:pb-16"}`}
+        >
+          <span
+            className="absolute -left-6 top-1 h-2.5 w-2.5 rounded-full bg-[#3aa0ff] sm:-left-7"
+            style={{
+              boxShadow:
+                "0 0 0 4px #ffffff, 0 0 0 5px rgba(58,160,255,0.22)",
+            }}
+          />
+          <div className="mb-2 font-mono text-[11px] text-[#1c6fd1]">
+            {item.meta}
           </div>
-        </section>
+          <h4 className="mb-2 text-base font-semibold text-[#0f172a] sm:text-lg">
+            {item.title}
+          </h4>
+          <p className="max-w-xl text-sm leading-7 text-[#4b5563]">
+            {item.body}
+          </p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
 
         <hr className="border-t border-[rgba(28,111,209,0.15)]" />
 
         {/* ================= PROJECTS ================= */}
-                <section id="projects" className="px-5 py-24 sm:px-8 md:px-10 md:py-36">
-          <div className="mx-auto max-w-[1100px]">
-            <span className="mb-4 block font-mono text-[11px] tracking-wide text-[#1c6fd1]">
-              // 04 — SYSTEM LOG
-            </span>
-            <h2 className="mb-6 max-w-lg text-3xl font-bold leading-tight sm:text-4xl md:text-5xl">
-              My Projects
-            </h2>
-            <p className="mb-12 max-w-lg text-sm leading-7 text-[#4b5563] sm:mb-16 sm:text-base">
-              Hover a project to preview it — stack and scope at a glance.
-            </p>
+  <section id="projects" className="px-5 py-20 sm:px-8 sm:py-24 md:px-10 md:py-36">
+  <div className="mx-auto max-w-[1100px]">
+    <span className="mb-4 block font-mono text-[11px] tracking-wide text-[#1c6fd1]">
+      // 04 — SYSTEM LOG
+    </span>
+    <h2 className="mb-6 max-w-lg text-[8vw] font-bold leading-tight xs:text-3xl sm:text-4xl md:text-5xl">
+      My Projects
+    </h2>
+    <p className="mb-10 max-w-lg text-sm leading-7 text-[#4b5563] sm:mb-16 sm:text-base">
+      Hover a project to preview it — stack and scope at a glance.
+    </p>
 
-            <div className="reveal-block grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-              {PROJECTS.map((project) => (
-                <div
-                  key={project.idx}
-                  className="electric-card relative rounded-md bg-[#f5f6f8] p-4 sm:p-5"
-                >
-                  <div className="project-image-wrap relative mb-4 aspect-[4/3] overflow-hidden rounded-[4px]">
-                    <img
-                      src={project.image}
-                      alt={project.title}
-                      loading="lazy"
-                      className="h-full w-full object-cover"
-                    />
-                    <div className="project-image-overlay" />
-                    
-                     <a href={project.link}
-  target="_blank"
-  rel="noopener noreferrer"
-  onClick={(e) => e.stopPropagation()}
-  className="go-live-btn absolute left-1/2 top-1/2 z-10 flex items-center gap-2 whitespace-nowrap rounded-full border border-[#3aa0ff] bg-[#050a14]/85 px-4 py-2 font-mono text-[11px] font-semibold text-[#3aa0ff] backdrop-blur-sm"
->
-  GO LIVE
-  <ArrowUpRight size={12} />
-</a>
-                  </div>
+    <div className="reveal-block grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      {PROJECTS.map((project) => (
+        <div
+          key={project.idx}
+          className="electric-card relative rounded-md bg-[#f5f6f8] p-4 sm:p-5"
+        >
+          <div className="project-image-wrap relative mb-4 aspect-[4/3] overflow-hidden rounded-[4px]">
+            <img
+              src={project.image}
+              alt={project.title}
+              loading="lazy"
+              className="h-full w-full object-cover"
+            />
+            <div className="project-image-overlay" />
 
-                  <span className="mb-2 block font-mono text-[10px] text-[#1c6fd1]">
-                    {project.idx}
-                  </span>
-                  <h3 className="mb-3 text-base font-semibold text-[#0f172a] sm:text-lg">
-                    {project.title}
-                  </h3>
-                  <div className="flex flex-wrap gap-1.5">
-                    {project.tags.map((tag) => (
-                      <span
-                        key={tag}
-                        className="rounded-full border border-[rgba(28,111,209,0.25)] px-2 py-0.5 font-mono text-[9px] text-[#4b5563]"
-                      >
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              ))}
-            </div>
+            
+            <a  href={project.link}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={(e) => e.stopPropagation()}
+              className="go-live-btn absolute left-1/2 top-1/2 z-10 flex items-center gap-1.5 whitespace-nowrap rounded-full border border-[#3aa0ff] bg-[#050a14]/85 px-3 py-1.5 font-mono text-[10px] font-semibold text-[#3aa0ff] backdrop-blur-sm sm:gap-2 sm:px-4 sm:py-2 sm:text-[11px]"
+            >
+              GO LIVE
+              <ArrowUpRight size={12} />
+            </a>
           </div>
-        </section>
+
+          <span className="mb-2 block font-mono text-[10px] text-[#1c6fd1]">
+            {project.idx}
+          </span>
+          <h3 className="mb-3 text-base font-semibold text-[#0f172a] sm:text-lg">
+            {project.title}
+          </h3>
+          <div className="flex flex-wrap gap-1.5">
+            {project.tags.map((tag) => (
+              <span
+                key={tag}
+                className="rounded-full border border-[rgba(28,111,209,0.25)] px-2 py-0.5 font-mono text-[9px] text-[#4b5563]"
+              >
+                {tag}
+              </span>
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
 
      
 
@@ -1125,253 +1182,259 @@ export default function Home() {
 
       {/* ================= TESTIMONIALS ================= */}
       <section
-        id="testimonials"
-        className="px-5 py-24 sm:px-8 md:px-10 md:py-36"
-      >
-        <div className="mx-auto max-w-[1100px]">
-          <span className="mb-4 block font-mono text-[11px] tracking-wide text-[#1c6fd1]">
-              // 06 — SIGNAL FROM OTHERS
-          </span>
-          <h2 className="mb-10 max-w-lg text-3xl font-bold leading-tight sm:mb-14 sm:text-4xl md:text-5xl">
-            What it's like working together.
-          </h2>
+  id="testimonials"
+  className="px-5 py-20 sm:px-8 sm:py-24 md:px-10 md:py-36"
+>
+  <div className="mx-auto max-w-[1100px]">
+    <span className="mb-4 block font-mono text-[11px] tracking-wide text-[#1c6fd1]">
+      // 06 — SIGNAL FROM OTHERS
+    </span>
+    <h2 className="mb-8 max-w-lg text-[8vw] font-bold leading-tight xs:text-3xl sm:mb-14 sm:text-4xl md:text-5xl">
+      What it's like working together.
+    </h2>
 
-          <div className="reveal-block min-h-[220px] border border-[rgba(28,111,209,0.15)] bg-[#f5f6f8] p-6 sm:p-10 md:p-12">
-            <p className="mb-7 max-w-2xl text-base leading-7 text-[#0f172a] sm:text-lg">
-              {TESTIMONIALS[testiIndex].quote}
-            </p>
-            <div className="flex items-center gap-3">
-              <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-[#1c6fd1] to-[#3aa0ff] font-mono text-sm font-bold text-[#ffffff]">
-                {TESTIMONIALS[testiIndex].initials}
-              </div>
-              <div>
-                <div className="text-sm font-semibold text-[#0f172a]">
-                  {TESTIMONIALS[testiIndex].name}
-                </div>
-                <div className="font-mono text-[11px] text-[#4b5563]">
-                  {TESTIMONIALS[testiIndex].role}
-                </div>
-              </div>
-            </div>
-
-            <div className="mt-6 flex items-center justify-between">
-              <div className="flex gap-2">
-                {TESTIMONIALS.map((_, i) => (
-                  <span
-                    key={i}
-                    onClick={() => setTestiIndex(i)}
-                    className={`h-1.5 w-1.5 cursor-pointer rounded-full transition-all ${i === testiIndex
-                        ? "scale-125 bg-[#3aa0ff]"
-                        : "bg-[#cbd5e1]"
-                      }`}
-                  />
-                ))}
-              </div>
-              <div className="flex gap-2.5">
-                <button
-                  onClick={() =>
-                    setTestiIndex(
-                      (testiIndex - 1 + TESTIMONIALS.length) %
-                      TESTIMONIALS.length
-                    )
-                  }
-                  aria-label="Previous testimonial"
-                  className="flex h-9 w-9 items-center justify-center rounded-full border border-[rgba(28,111,209,0.25)] font-mono transition-colors hover:border-[#1c6fd1] hover:text-[#1c6fd1]"
-                >
-                  ←
-                </button>
-                <button
-                  onClick={() =>
-                    setTestiIndex((testiIndex + 1) % TESTIMONIALS.length)
-                  }
-                  aria-label="Next testimonial"
-                  className="flex h-9 w-9 items-center justify-center rounded-full border border-[rgba(28,111,209,0.25)] font-mono transition-colors hover:border-[#1c6fd1] hover:text-[#1c6fd1]"
-                >
-                  →
-                </button>
-              </div>
-            </div>
+    <div className="reveal-block min-h-[260px] border border-[rgba(28,111,209,0.15)] bg-[#f5f6f8] p-5 sm:min-h-[220px] sm:p-10 md:p-12">
+      <p className="mb-7 max-w-2xl text-base leading-7 text-[#0f172a] sm:text-lg">
+        {TESTIMONIALS[testiIndex].quote}
+      </p>
+      <div className="flex items-center gap-3">
+        <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-[#1c6fd1] to-[#3aa0ff] font-mono text-sm font-bold text-[#ffffff]">
+          {TESTIMONIALS[testiIndex].initials}
+        </div>
+        <div>
+          <div className="text-sm font-semibold text-[#0f172a]">
+            {TESTIMONIALS[testiIndex].name}
+          </div>
+          <div className="font-mono text-[11px] text-[#4b5563]">
+            {TESTIMONIALS[testiIndex].role}
           </div>
         </div>
-      </section>
+      </div>
+
+      <div className="mt-6 flex flex-wrap items-center justify-between gap-4">
+        <div className="flex gap-1">
+          {TESTIMONIALS.map((_, i) => (
+            <button
+              key={i}
+              onClick={() => setTestiIndex(i)}
+              aria-label={`Go to testimonial ${i + 1}`}
+              className="flex h-6 w-6 items-center justify-center"
+            >
+              <span
+                className={`block h-1.5 w-1.5 rounded-full transition-all ${
+                  i === testiIndex
+                    ? "scale-125 bg-[#3aa0ff]"
+                    : "bg-[#cbd5e1]"
+                }`}
+              />
+            </button>
+          ))}
+        </div>
+        <div className="flex gap-2.5">
+          <button
+            onClick={() =>
+              setTestiIndex(
+                (testiIndex - 1 + TESTIMONIALS.length) %
+                TESTIMONIALS.length
+              )
+            }
+            aria-label="Previous testimonial"
+            className="flex h-9 w-9 items-center justify-center rounded-full border border-[rgba(28,111,209,0.25)] font-mono transition-colors hover:border-[#1c6fd1] hover:text-[#1c6fd1]"
+          >
+            ←
+          </button>
+          <button
+            onClick={() =>
+              setTestiIndex((testiIndex + 1) % TESTIMONIALS.length)
+            }
+            aria-label="Next testimonial"
+            className="flex h-9 w-9 items-center justify-center rounded-full border border-[rgba(28,111,209,0.25)] font-mono transition-colors hover:border-[#1c6fd1] hover:text-[#1c6fd1]"
+          >
+            →
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
      
 
       <hr className="border-t border-[rgba(28,111,209,0.15)]" />
 
       {/* ================= CONTACT ================= */}
-      <section id="contact" className="px-5 py-24 sm:px-8 md:px-10 md:py-36">
-        <div className="mx-auto max-w-[1100px]">
-          <span className="mb-4 block font-mono text-[11px] tracking-wide text-[#1c6fd1]">
-            CONTACT ME
-          </span>
-          <h2 className="mb-6 max-w-lg text-3xl font-bold leading-tight sm:text-4xl md:text-5xl">
-            Tell me what you're building.
-          </h2>
-          <p className="mb-12 max-w-lg text-sm leading-7 text-[#4b5563] sm:mb-16 sm:text-base">
-            A few sentences on the problem is plenty to start — I'll follow up
-            with the right questions.
-          </p>
+    <section id="contact" className="px-5 py-20 sm:px-8 sm:py-24 md:px-10 md:py-36">
+  <div className="mx-auto max-w-[1100px]">
+    <span className="mb-4 block font-mono text-[11px] tracking-wide text-[#1c6fd1]">
+      CONTACT ME
+    </span>
+    <h2 className="mb-6 max-w-lg text-[8vw] font-bold leading-tight xs:text-3xl sm:text-4xl md:text-5xl">
+      Tell me what you're building.
+    </h2>
+    <p className="mb-10 max-w-lg text-sm leading-7 text-[#4b5563] sm:mb-16 sm:text-base">
+      A few sentences on the problem is plenty to start — I'll follow up
+      with the right questions.
+    </p>
 
-          <div className="reveal-block grid grid-cols-1 gap-10 md:grid-cols-[0.8fr_1.2fr] md:gap-12">
-            <div>
-              <p className="mb-6 text-sm leading-7 text-[#4b5563]">
-                Based remotely, working across time zones. Usual response time
-                is under 24 hours on weekdays.
-              </p>
-              <div className="mb-3 flex items-center gap-2.5 font-mono text-[13px] text-[#0f172a]">
-                <span className="w-16 flex-shrink-0 text-[#1c6fd1]">EMAIL</span>
-                hello@example.com
-              </div>
-              <div className="mb-3 flex items-center gap-2.5 font-mono text-[13px] text-[#0f172a]">
-                <span className="w-16 flex-shrink-0 text-[#1c6fd1]">STATUS</span>
-                Accepting new work
-              </div>
-              <div className="flex items-center gap-2.5 font-mono text-[13px] text-[#0f172a]">
-                <span className="w-16 flex-shrink-0 text-[#1c6fd1]">REPLY</span>
-                &lt; 24h, weekdays
-              </div>
-
-              <div className="mt-9 flex gap-3">
-                <span className="rounded-full border border-[rgba(28,111,209,0.25)] px-4 py-2 font-mono text-xs text-[#4b5563]">
-                  GH
-                </span>
-                <span className="rounded-full border border-[rgba(28,111,209,0.25)] px-4 py-2 font-mono text-xs text-[#4b5563]">
-                  IN
-                </span>
-              </div>
-            </div>
-
-            <form onSubmit={handleSubmit} className="flex flex-col gap-5" noValidate>
-              <div className="flex flex-col gap-2">
-                <label htmlFor="c-name" className="font-mono text-[11px] text-[#4b5563]">
-                  NAME
-                </label>
-                <input
-                  id="c-name"
-                  name="name"
-                  type="text"
-                  autoComplete="name"
-                  value={formData.name}
-                  onChange={handleChange}
-                  className="rounded-[3px] border border-[rgba(28,111,209,0.25)] bg-[#f5f6f8] px-3.5 py-3 text-sm text-[#0f172a] outline-none transition-colors focus:border-[#3aa0ff]"
-                />
-                <span className="min-h-[14px] font-mono text-[11px] text-[#dc2626]">
-                  {formErrors.name}
-                </span>
-              </div>
-
-              <div className="flex flex-col gap-2">
-                <label htmlFor="c-email" className="font-mono text-[11px] text-[#4b5563]">
-                  EMAIL
-                </label>
-                <input
-                  id="c-email"
-                  name="email"
-                  type="email"
-                  autoComplete="email"
-                  value={formData.email}
-                  onChange={handleChange}
-                  className="rounded-[3px] border border-[rgba(28,111,209,0.25)] bg-[#f5f6f8] px-3.5 py-3 text-sm text-[#0f172a] outline-none transition-colors focus:border-[#3aa0ff]"
-                />
-                <span className="min-h-[14px] font-mono text-[11px] text-[#dc2626]">
-                  {formErrors.email}
-                </span>
-              </div>
-
-              <div className="flex flex-col gap-2">
-                <label htmlFor="c-message" className="font-mono text-[11px] text-[#4b5563]">
-                  MESSAGE
-                </label>
-                <textarea
-                  id="c-message"
-                  name="message"
-                  rows={5}
-                  value={formData.message}
-                  onChange={handleChange}
-                  className="resize-y rounded-[3px] border border-[rgba(28,111,209,0.25)] bg-[#f5f6f8] px-3.5 py-3 text-sm text-[#0f172a] outline-none transition-colors focus:border-[#3aa0ff]"
-                />
-                <span className="min-h-[14px] font-mono text-[11px] text-[#dc2626]">
-                  {formErrors.message}
-                </span>
-              </div>
-
-              <div className="mt-1 flex flex-wrap items-center gap-4">
-                <button
-                  type="submit"
-                  disabled={submitting}
-                  ref={(el) => setMagneticRef(el, 2)}
-                  className="flex items-center gap-2.5 rounded-[3px] border border-[#3aa0ff] bg-[#3aa0ff] px-6 py-3.5 font-mono text-xs font-semibold text-[#050a14] transition-opacity hover:bg-[#6cc0ff] disabled:cursor-not-allowed disabled:opacity-50"
-                >
-                  {submitting ? "SENDING..." : "SEND MESSAGE"}
-                  {submitting && (
-                    <span className="h-3.5 w-3.5 animate-spin rounded-full border-2 border-[rgba(58,160,255,0.25)] border-t-[#050a14]" />
-                  )}
-                </button>
-                {formStatus && (
-                  <span className="font-mono text-xs text-[#8b6bff]">
-                    {formStatus}
-                  </span>
-                )}
-              </div>
-            </form>
-          </div>
+    <div className="reveal-block grid grid-cols-1 gap-10 md:grid-cols-[0.8fr_1.2fr] md:gap-12">
+      <div>
+        <p className="mb-6 text-sm leading-7 text-[#4b5563]">
+          Based remotely, working across time zones. Usual response time
+          is under 24 hours on weekdays.
+        </p>
+        <div className="mb-3 flex items-start gap-2.5 font-mono text-[13px] text-[#0f172a]">
+          <span className="w-14 flex-shrink-0 pt-px text-[#1c6fd1] sm:w-16">EMAIL</span>
+          <span className="min-w-0 break-all">rahim.dev132008@gmail.com</span>
         </div>
-      </section>
+        <div className="mb-3 flex items-center gap-2.5 font-mono text-[13px] text-[#0f172a]">
+          <span className="w-14 flex-shrink-0 text-[#1c6fd1] sm:w-16">STATUS</span>
+          Accepting new work
+        </div>
+        <div className="flex items-center gap-2.5 font-mono text-[13px] text-[#0f172a]">
+          <span className="w-14 flex-shrink-0 text-[#1c6fd1] sm:w-16">REPLY</span>
+          &lt; 24h, weekdays
+        </div>
+
+        <div className="mt-9 flex gap-3">
+          <span className="rounded-full border border-[rgba(28,111,209,0.25)] px-4 py-2 font-mono text-xs text-[#4b5563]">
+            GH
+          </span>
+          <span className="rounded-full border border-[rgba(28,111,209,0.25)] px-4 py-2 font-mono text-xs text-[#4b5563]">
+            IN
+          </span>
+        </div>
+      </div>
+
+      <form onSubmit={handleSubmit} className="flex flex-col gap-5" noValidate>
+        <div className="flex flex-col gap-2">
+          <label htmlFor="c-name" className="font-mono text-[11px] text-[#4b5563]">
+            NAME
+          </label>
+          <input
+            id="c-name"
+            name="name"
+            type="text"
+            autoComplete="name"
+            value={formData.name}
+            onChange={handleChange}
+            className="w-full rounded-[3px] border border-[rgba(28,111,209,0.25)] bg-[#f5f6f8] px-3.5 py-3 text-sm text-[#0f172a] outline-none transition-colors focus:border-[#3aa0ff]"
+          />
+          <span className="min-h-[14px] font-mono text-[11px] text-[#dc2626]">
+            {formErrors.name}
+          </span>
+        </div>
+
+        <div className="flex flex-col gap-2">
+          <label htmlFor="c-email" className="font-mono text-[11px] text-[#4b5563]">
+            EMAIL
+          </label>
+          <input
+            id="c-email"
+            name="email"
+            type="email"
+            autoComplete="email"
+            value={formData.email}
+            onChange={handleChange}
+            className="w-full rounded-[3px] border border-[rgba(28,111,209,0.25)] bg-[#f5f6f8] px-3.5 py-3 text-sm text-[#0f172a] outline-none transition-colors focus:border-[#3aa0ff]"
+          />
+          <span className="min-h-[14px] font-mono text-[11px] text-[#dc2626]">
+            {formErrors.email}
+          </span>
+        </div>
+
+        <div className="flex flex-col gap-2">
+          <label htmlFor="c-message" className="font-mono text-[11px] text-[#4b5563]">
+            MESSAGE
+          </label>
+          <textarea
+            id="c-message"
+            name="message"
+            rows={5}
+            value={formData.message}
+            onChange={handleChange}
+            className="w-full resize-y rounded-[3px] border border-[rgba(28,111,209,0.25)] bg-[#f5f6f8] px-3.5 py-3 text-sm text-[#0f172a] outline-none transition-colors focus:border-[#3aa0ff]"
+          />
+          <span className="min-h-[14px] font-mono text-[11px] text-[#dc2626]">
+            {formErrors.message}
+          </span>
+        </div>
+
+        <div className="mt-1 flex flex-wrap items-center gap-4">
+          <button
+            type="submit"
+            disabled={submitting}
+            ref={(el) => setMagneticRef(el, 2)}
+            className="flex items-center gap-2.5 rounded-[3px] border border-[#3aa0ff] bg-[#3aa0ff] px-6 py-3.5 font-mono text-xs font-semibold text-[#050a14] transition-opacity hover:bg-[#6cc0ff] disabled:cursor-not-allowed disabled:opacity-50"
+          >
+            {submitting ? "SENDING..." : "SEND MESSAGE"}
+            {submitting && (
+              <span className="h-3.5 w-3.5 animate-spin rounded-full border-2 border-[rgba(58,160,255,0.25)] border-t-[#050a14]" />
+            )}
+          </button>
+          {formStatus && (
+            <span className="font-mono text-xs text-[#8b6bff]">
+              {formStatus}
+            </span>
+          )}
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
 
       {/* ================= SIGNOFF ================= */}
-      <section
-        id="signoff"
-        className="border-t border-[rgba(28,111,209,0.15)] px-5 py-24 text-center sm:px-8 md:px-10 md:py-32"
-      >
-        <h2 className="reveal mb-6 font-mono text-4xl font-extrabold tracking-tight sm:text-6xl md:text-7xl">
-          END TRANSMISSION
-        </h2>
-        <p className="reveal mx-auto mb-10 max-w-md text-sm leading-7 text-[#4b5563] sm:text-base">
-          If you've got something worth building, that's the whole pitch.
-        </p>
-        <div className="reveal flex justify-center">
-          <a
-            href="mailto:hello@example.com"
-            ref={(el) => setMagneticRef(el, 3)}
-            className="rounded-[3px] border border-[#3aa0ff] bg-[#3aa0ff] px-7 py-4 font-mono text-xs font-semibold text-[#050a14] transition-colors hover:bg-[#6cc0ff]"
-          >
-            hello@example.com
-          </a>
-        </div>
-      </section>
+     <section
+  id="signoff"
+  className="border-t border-[rgba(28,111,209,0.15)] px-5 py-20 text-center sm:px-8 sm:py-24 md:px-10 md:py-32"
+>
+  <h2 className="reveal mb-6 font-mono text-[10vw] font-extrabold tracking-tight xs:text-4xl sm:text-6xl md:text-7xl">
+    END TRANSMISSION
+  </h2>
+  <p className="reveal mx-auto mb-10 max-w-md text-sm leading-7 text-[#4b5563] sm:text-base">
+    If you've got something worth building, that's the whole pitch.
+  </p>
+  <div className="reveal flex justify-center px-2">
+    
+     <a href="mailto:hello@example.com"
+      ref={(el) => setMagneticRef(el, 3)}
+      className="max-w-full break-all rounded-[3px] border border-[#3aa0ff] bg-[#3aa0ff] px-5 py-4 text-center font-mono text-[11px] font-semibold text-[#050a14] transition-colors hover:bg-[#6cc0ff] sm:px-7 sm:text-xs"
+    >
+      rahim.dev132008@gmail.com
+    </a>
+  </div>
+</section>
 
       {/* ================= FOOTER ================= */}
-      <footer className="flex flex-col gap-3 border-t border-[rgba(28,111,209,0.15)] px-5 py-6 font-mono text-[11px] text-[#4b5563] sm:flex-row sm:items-center sm:justify-between sm:px-8 md:px-10">
-        <span>RK © 2026</span>
-        <div className="flex gap-5">
-          <a href="#about" className="transition-colors hover:text-[#1c6fd1]">
-            About
-          </a>
-          <a href="#projects" className="transition-colors hover:text-[#1c6fd1]">
-            Projects
-          </a>
-          <a href="#contact" className="transition-colors hover:text-[#1c6fd1]">
-            Contact
-          </a>
-        </div>
-        <span>NO TRACKING / NO NOISE</span>
-      </footer>
+      <footer className="flex flex-col items-center gap-3 border-t border-[rgba(28,111,209,0.15)] px-5 py-6 text-center font-mono text-[11px] text-[#4b5563] sm:flex-row sm:items-center sm:justify-between sm:px-8 sm:text-left md:px-10">
+  <span>RK © 2026</span>
+  <div className="flex flex-wrap justify-center gap-x-5 gap-y-2">
+    <a href="#about" className="transition-colors hover:text-[#1c6fd1]">
+      About
+    </a>
+    <a href="#projects" className="transition-colors hover:text-[#1c6fd1]">
+      Projects
+    </a>
+    <a href="#contact" className="transition-colors hover:text-[#1c6fd1]">
+      Contact
+    </a>
+  </div>
+  <span>NO TRACKING / NO NOISE</span>
+</footer>
     </main>
     
 
       {/* ================= BACK TO TOP ================= */ }
       <button
-        onClick={scrollToTop}
-        aria-label="Back to top"
-        className="fixed bottom-6 right-6 z-[60] flex h-11 w-11 items-center justify-center rounded-full bg-[#3aa0ff] text-[#050a14] shadow-lg transition-all duration-300"
-        style={{
-          opacity: showBackToTop ? 1 : 0,
-          pointerEvents: showBackToTop ? "auto" : "none",
-        }}
-      >
-        <ArrowUp size={18} />
-      </button>
+  onClick={scrollToTop}
+  aria-label="Back to top"
+  className="fixed bottom-5 right-5 z-[60] flex h-11 w-11 items-center justify-center rounded-full bg-[#3aa0ff] text-[#050a14] shadow-lg transition-all duration-300 sm:bottom-6 sm:right-6"
+  style={{
+    opacity: showBackToTop ? 1 : 0,
+    pointerEvents: showBackToTop ? "auto" : "none",
+  }}
+>
+  <ArrowUp size={18} />
+</button>
 
       <style>{`
         html { scroll-behavior: smooth; }
@@ -1561,10 +1624,24 @@ export default function Home() {
           from { left: -60%; }
           to { left: 130%; }
         }
-      .go-live-btn {
+   .go-live-btn {
   opacity: 0;
   transform: translate(-50%, -50%) scale(0.7);
   transition: opacity 0.35s ease, transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.project-image-wrap:hover .go-live-btn {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+}
+
+/* Mobile: no hover, so always show the button, with transparent background */
+@media (max-width: 639px) {
+  .go-live-btn {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+    background: transparent;
+    backdrop-filter: none;
+  }
 }
 .project-image-wrap:hover .go-live-btn {
   opacity: 1;
