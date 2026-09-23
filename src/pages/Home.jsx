@@ -192,24 +192,24 @@ const PROCESS_STEPS = [
 const TESTIMONIALS = [
   {
     quote:
-      "\u201cRK was the first engineer on our team who could move between frontend polish and backend architecture without a context switch. That's rarer than it should be.\u201d",
-    name: "Maya Jensen",
-    role: "Product Lead, Northbeam",
-    initials: "MJ",
+      "\u201cRahim is the best developer I have worked with. He builds clean websites and always delivers on time.\u201d",
+    name: "Ahmed Raza",
+    role: "Business Owner, Bannu",
+    initials: "AR",
   },
   {
     quote:
-      "\u201cWe came in needing a fast fix and left with a system that actually made sense. The documentation alone saved us weeks later.\u201d",
-    name: "Daniel Cho",
-    role: "CTO, Fieldwire Labs",
-    initials: "DC",
+      "\u201cHe is not just a developer, he is also a great content creator. His thumbnail designs and video editing are top class.\u201d",
+    name: "Usman Khan",
+    role: "YouTuber, Islamabad",
+    initials: "UK",
   },
   {
     quote:
-      "\u201cCommunicated trade-offs clearly at every step instead of just disappearing into the code. That made the whole project much lower-stress.\u201d",
-    name: "Priya Nair",
-    role: "Founder, Loomstack",
-    initials: "PN",
+      "\u201cVery professional and hardworking. He understood our project needs quickly and made a perfect website for our academy.\u201d",
+    name: "Sana Malik",
+    role: "Academy Owner, Peshawar",
+    initials: "SM",
   },
 ];
 
