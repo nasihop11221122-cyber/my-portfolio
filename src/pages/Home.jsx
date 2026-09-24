@@ -2,8 +2,9 @@ import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import emailjs from "@emailjs/browser";
-import { ArrowUpRight, ArrowUp, Mail, Terminal, } from "lucide-react";
+
 import { FaYoutube } from "react-icons/fa";
+import { ArrowUpRight, ArrowUp, Mail, Terminal, Download } from "lucide-react";
 
 import * as THREE from "three";
 gsap.registerPlugin(ScrollTrigger);
@@ -878,13 +879,15 @@ export default function Home() {
           <ArrowUpRight size={14} />
         </a>
         
-         <a href="#contact"
-          ref={(el) => setMagneticRef(el, 1)}
-          className="flex items-center gap-2 rounded-[3px] border border-[#1c6fd1] px-5 py-3.5 font-mono text-xs font-semibold text-[#1c6fd1] transition-colors hover:bg-[rgba(28,111,209,0.08)] sm:px-6"
-        >
-          CONTACT ME
-          <Mail size={14} />
-        </a>
+         
+ <a href="/rahim-cv.pdf"
+  download="rahim-cv.pdf"
+  ref={(el) => setMagneticRef(el, 1)}
+  className="flex items-center gap-2 rounded-[3px] border border-[#1c6fd1] px-5 py-3.5 font-mono text-xs font-semibold text-[#1c6fd1] transition-colors hover:bg-[rgba(28,111,209,0.08)] sm:px-6"
+>
+  DOWNLOAD CV
+  <Download size={14} />
+</a>
       </div>
 
     </div>
