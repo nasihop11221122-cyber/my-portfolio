@@ -769,21 +769,23 @@ export default function Home() {
 
 
       <main className="relative z-[3]">
-        {/* ================= NAV ================= */}
+      
         
 
+
+
 {/* ================= NAV ================= */}
-<nav className="nav-bar fixed left-0 right-0 top-0 z-50 flex items-center justify-between gap-4 border-b border-[rgba(28,111,209,0.15)] bg-[#ffffff]/80 px-4 py-3 font-mono text-[11px] tracking-wide text-[#4b5563] backdrop-blur-md sm:px-8 sm:text-xs">
+<nav className="nav-bar fixed left-0 right-0 top-0 z-50 flex items-center justify-between gap-4 border-b-2 border-[rgba(28,111,209,0.25)] bg-[#ffffff]/80 px-4 py-2 font-mono text-sm font-black tracking-wide text-[#334155] backdrop-blur-md sm:px-8 sm:text-base">
   <a href="#" className="flex items-center flex-shrink-0" aria-label="RK Home">
     <svg
-      width="40"
-      height="40"
+      width="46"
+      height="46"
       viewBox="0 0 48 48"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
-      className="sm:w-[46px] sm:h-[46px]"
+      className="sm:w-[54px] sm:h-[54px]"
     >
-      <rect x="1.5" y="1.5" width="45" height="45" rx="10" stroke="#3aa0ff" strokeWidth="1.5" fill="rgba(58,160,255,0.08)" />
+      <rect x="1.5" y="1.5" width="45" height="45" rx="10" stroke="#3aa0ff" strokeWidth="2" fill="rgba(58,160,255,0.08)" />
       <path d="M13 33V15h7.8c3.4 0 5.9 2.2 5.9 5.4 0 2.3-1.3 4.1-3.4 4.9L27 33h-4l-3.6-7.4h-2.6V33h-3.8z" fill="#3aa0ff" />
       <path d="M16.8 18.2v4.6h3.6c1.6 0 2.7-1 2.7-2.3s-1.1-2.3-2.7-2.3h-3.6z" fill="#ffffff" />
       <path d="M28.5 33V15h3.8v7.6l6.3-7.6h4.5l-7 8.2L43.3 33h-4.6l-5.1-7.3-1.3 1.5V33h-3.8z" fill="#8b6bff" />
@@ -791,18 +793,18 @@ export default function Home() {
   </a>
 
   {/* Desktop links */}
-  <div className="hidden items-center justify-center gap-5 md:flex lg:gap-7">
-    <a href="#" className="nav-link-electric">Home</a>
-    <a href="#about" className="nav-link-electric">About</a>
-    <a href="#skills" className="nav-link-electric">Skills</a>
-    <a href="#projects" className="nav-link-electric">Projects</a>
-    <a href="#contact" className="nav-link-electric">Contact</a>
+  <div className="hidden items-center justify-center gap-6 text-base font-black md:flex lg:gap-9 lg:text-lg">
+    <a href="#" className="nav-link-electric font-black">Home</a>
+    <a href="#about" className="nav-link-electric font-black">About</a>
+    <a href="#skills" className="nav-link-electric font-black">Skills</a>
+    <a href="#projects" className="nav-link-electric font-black">Projects</a>
+    <a href="#contact" className="nav-link-electric font-black">Contact</a>
   </div>
 
   {/* Desktop CTA */}
   
    <a href="#timeline"
-    className="hidden md:flex items-center gap-1.5 rounded-full border border-[#1c6fd1] px-4 py-2 font-mono text-[11px] font-semibold text-[#1c6fd1] transition-colors hover:bg-[rgba(28,111,209,0.08)]"
+    className="hidden md:flex items-center gap-1.5 rounded-full border-[1px] border-[#1c6fd1] px-6 py-2.5 font-mono text-sm font-black text-[#1c6fd1] transition-colors hover:bg-[rgba(28,111,209,0.08)] lg:text-base"
   >
     MY JOURNEY
   </a>
@@ -814,14 +816,14 @@ export default function Home() {
     aria-label="Toggle menu"
     aria-expanded={menuOpen}
   >
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
       {menuOpen ? (
-        <path d="M6 6l12 12M6 18L18 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+        <path d="M6 6l12 12M6 18L18 6" stroke="currentColor" strokeWidth="3.5" strokeLinecap="round" />
       ) : (
         <>
-          <path d="M4 6h16" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-          <path d="M4 12h16" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-          <path d="M4 18h16" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+          <path d="M4 6h16" stroke="currentColor" strokeWidth="3.5" strokeLinecap="round" />
+          <path d="M4 12h16" stroke="currentColor" strokeWidth="3.5" strokeLinecap="round" />
+          <path d="M4 18h16" stroke="currentColor" strokeWidth="3.5" strokeLinecap="round" />
         </>
       )}
     </svg>
@@ -829,16 +831,17 @@ export default function Home() {
 
   {/* Mobile dropdown menu */}
   {menuOpen && (
-    <div className="absolute left-0 right-0 top-full flex flex-col gap-1 border-b border-[rgba(28,111,209,0.15)] bg-white/95 px-5 py-4 backdrop-blur-md md:hidden">
-      <a href="#" onClick={() => setMenuOpen(false)} className="nav-link-electric py-2">Home</a>
-      <a href="#about" onClick={() => setMenuOpen(false)} className="nav-link-electric py-2">About</a>
-      <a href="#skills" onClick={() => setMenuOpen(false)} className="nav-link-electric py-2">Skills</a>
-      <a href="#projects" onClick={() => setMenuOpen(false)} className="nav-link-electric py-2">Projects</a>
-      <a href="#contact" onClick={() => setMenuOpen(false)} className="nav-link-electric py-2">Contact</a>
+    <div className="absolute left-0 right-0 top-full flex flex-col gap-1 border-b-2 border-[rgba(28,111,209,0.25)] bg-white/95 px-5 py-5 text-lg font-black backdrop-blur-md md:hidden">
+      <a href="#" onClick={() => setMenuOpen(false)} className="nav-link-electric py-2.5 font-black">Home</a>
+      <a href="#about" onClick={() => setMenuOpen(false)} className="nav-link-electric py-2.5 font-black">About</a>
+      <a href="#skills" onClick={() => setMenuOpen(false)} className="nav-link-electric py-2.5 font-black">Skills</a>
+      <a href="#projects" onClick={() => setMenuOpen(false)} className="nav-link-electric py-2.5 font-black">Projects</a>
+      <a href="#contact" onClick={() => setMenuOpen(false)} className="nav-link-electric py-2.5 font-black">Contact</a>
+
       
-       <a href="#timeline"
+      <a  href="#timeline"
         onClick={() => setMenuOpen(false)}
-        className="mt-2 flex w-fit items-center gap-1.5 rounded-full border border-[#1c6fd1] px-4 py-2 font-mono text-[11px] font-semibold text-[#1c6fd1]"
+        className="mt-3 flex w-fit items-center gap-1.5 rounded-full border-[3px] border-[#1c6fd1] px-6 py-2.5 font-mono text-sm font-black text-[#1c6fd1]"
       >
         MY JOURNEY
       </a>
@@ -923,8 +926,9 @@ export default function Home() {
   </div>
 </section>
 
-        {/* ================= MARQUEE ================= */}
-        <div className="overflow-hidden border-y border-[rgba(28,111,209,0.15)] py-4 sm:py-5">
+      
+  {/* ================= MARQUEE ================= */}
+<div className="overflow-hidden border-y border-[rgba(28,111,209,0.15)] py-4 sm:py-5">
   <div
     className="flex w-max gap-6 sm:gap-8 md:gap-12"
     style={{ animation: "marquee 28s linear infinite" }}
@@ -932,7 +936,7 @@ export default function Home() {
     {[...MARQUEE_ITEMS, ...MARQUEE_ITEMS].map((item, i) => (
       <span
         key={i}
-        className="flex items-center gap-2 whitespace-nowrap font-mono text-[11px] text-[#94a3b8] sm:gap-3 sm:text-sm"
+        className="flex items-center gap-2 whitespace-nowrap font-mono text-[11px] font-black text-[#94a3b8] sm:gap-3 sm:text-sm"
       >
         {item} <span className="text-[#1c6fd1]">◆</span>
       </span>
