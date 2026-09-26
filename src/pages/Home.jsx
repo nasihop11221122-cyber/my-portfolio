@@ -769,9 +769,9 @@ export default function Home() {
   aria-hidden="true"
 />
       <div
-        className="scanlines pointer-events-none fixed inset-0 z-[1]"
-        aria-hidden="true"
-      />
+  className="soft-streak pointer-events-none fixed inset-0 z-[1]"
+  aria-hidden="true"
+/>
    
 
 
@@ -1515,18 +1515,14 @@ export default function Home() {
         body { margin: 0; background: #ffffff; }
         ::selection { background: #3aa0ff; color: #0f172a; }
 
-        .scanlines {
-          background: repeating-linear-gradient(
-            0deg,
-            rgba(0,0,0,0.05) 0px,
-            rgba(0,0,0,0.05) 1px,
-            transparent 1px,
-            transparent 3px
-          );
-          mix-blend-mode: multiply;
-          opacity: 0.6;
-        }
-
+       .soft-streak {
+  background: linear-gradient(
+    135deg,
+    transparent 0%,
+    rgba(58,160,255,0.09) 40%,
+    transparent 55%
+  );
+}
         @keyframes marquee {
           from { transform: translateX(0); }
           to { transform: translateX(-50%); }
