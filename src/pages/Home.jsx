@@ -35,29 +35,29 @@ const MARQUEE_ITEMS = [
 const SKILLS = [
   {
     title: "Thumbnail Designing",
-    image: "https://res.cloudinary.com/gp4dzet9/image/upload/v1789926486/ffaabbbf-1ba5-4194-b751-e6c74690afd0.png",
+    image: "https://res.cloudinary.com/gp4dzet9/image/upload/f_auto,q_auto,w_500/v1789926486/ffaabbbf-1ba5-4194-b751-e6c74690afd0.png",
   },
   {
     title: "Youtube Atomation",
-    image: "https://res.cloudinary.com/gp4dzet9/image/upload/v1789926396/5eaa007e-b880-45ee-90c2-5c42437efa13.png",
+    image: "https://res.cloudinary.com/gp4dzet9/image/upload/f_auto,q_auto,w_500/v1789926396/5eaa007e-b880-45ee-90c2-5c42437efa13.png",
   },
   {
     title: "Backend Development",
-    image: "https://res.cloudinary.com/gp4dzet9/image/upload/v1789926419/1f216569-a38d-4683-aeb0-1e0d5cb32ac7.png",
+    image: "https://res.cloudinary.com/gp4dzet9/image/upload/f_auto,q_auto,w_500/v1789926419/1f216569-a38d-4683-aeb0-1e0d5cb32ac7.png",
   },
   {
     title: "Frontend Development",
-    image: "https://res.cloudinary.com/gp4dzet9/image/upload/v1789926462/27fd713c-a523-4348-b0b2-8013dd33d434.png",
+    image: "https://res.cloudinary.com/gp4dzet9/image/upload/f_auto,q_auto,w_500/v1789926462/27fd713c-a523-4348-b0b2-8013dd33d434.png",
   },
   {
     title: "video Editing",
-    image: "https://res.cloudinary.com/gp4dzet9/image/upload/v1789927141/594de0e8-5f8c-4872-8fc2-3d86d72fd1da.png",
+    image: "https://res.cloudinary.com/gp4dzet9/image/upload/f_auto,q_auto,w_500/v1789927141/594de0e8-5f8c-4872-8fc2-3d86d72fd1da.png",
   },
   {
     title: "content creation",
-    image: "https://res.cloudinary.com/gp4dzet9/image/upload/v1789927466/26116ccd-19d6-40c0-bf15-3638dee5eb2d.png",
+    image: "https://res.cloudinary.com/gp4dzet9/image/upload/f_auto,q_auto,w_500/v1789927466/26116ccd-19d6-40c0-bf15-3638dee5eb2d.png",
   },
-]; 
+];
 
 const STATS = [
   { count: 5, suffix: "+", label: "YEARS SHIPPING" },
@@ -138,7 +138,7 @@ const PROJECTS = [
       "Built with React and tailwind css . Reduced incident detection time from ~8 minutes to under 30 seconds by surfacing anomalies directly in the UI instead of a separate alerting tool.",
     tags: ["react", "MongoDB", "Node.js","tailwind css", "Express","framer motion"],
     // TODO: swap for a real screenshot of this project
-    image: "https://res.cloudinary.com/gp4dzet9/image/upload/v1789913366/da8c373e-012e-4cf2-960b-cfaa3bae392d.png",
+           image: "https://res.cloudinary.com/gp4dzet9/image/upload/f_auto,q_auto,w_700/v1789913366/da8c373e-012e-4cf2-960b-cfaa3bae392d.png",
     // TODO: swap for the real live URL
     link: "https://www.ssibannu.com/ ",
   },
@@ -150,7 +150,8 @@ const PROJECTS = [
     details:
       "Designed a GraphQL API on top of a normalized MongoDB schema, with Redis caching on hot product queries. Cut average response time by 60% under peak load during a seasonal traffic spike.",
     tags: ["react", "MongoDB", "Node.js","tailwind css", "Express","framer motion"],
-    image: "https://res.cloudinary.com/gp4dzet9/image/upload/v1789913993/4f712c70-40d8-40c3-afa4-2ad72df5ccac.png",
+       image: "https://res.cloudinary.com/gp4dzet9/image/upload/f_auto,q_auto,w_700/v1789913993/4f712c70-40d8-40c3-afa4-2ad72df5ccac.png",
+    
     link: "#",
   },
   {
@@ -161,7 +162,7 @@ const PROJECTS = [
     details:
       "Replaced roughly 30,000 lines of ad-hoc CSS with a shared component library, cutting new-feature styling time by half and eliminating an entire class of visual regressions across the product.",
     tags: ["react", "MongoDB", "Node.js","tailwind css", "Express","framer motion"],
-    image: "https://res.cloudinary.com/gp4dzet9/image/upload/v1789922637/d7a12d0a-e181-4d07-83ea-b097165776b3_1.png",
+         image: "https://res.cloudinary.com/gp4dzet9/image/upload/f_auto,q_auto,w_700/v1789922637/d7a12d0a-e181-4d07-83ea-b097165776b3_1.png",
     link: "#",
   },
   
@@ -286,6 +287,7 @@ export default function Home() {
   const [openFaq, setOpenFaq] = useState(null);
   const [testiIndex, setTestiIndex] = useState(0);
   const [showBackToTop, setShowBackToTop] = useState(false);
+  const [isFinePointer, setIsFinePointer] = useState(false);
   const [statValues, setStatValues] = useState(STATS.map(() => 0));
   const [skillFills, setSkillFills] = useState(
     SKILL_GROUPS.map((g) => g.skills.map(() => 0))
@@ -531,6 +533,10 @@ export default function Home() {
     const onScroll = () => setShowBackToTop(window.scrollY > 600);
     window.addEventListener("scroll", onScroll);
     return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+    useEffect(() => {
+    setIsFinePointer(window.matchMedia("(pointer: fine)").matches);
   }, []);
    /* -----------------------------------------------------------
      GOLD COIN — 3D scroll-driven background (Three.js)
@@ -901,23 +907,27 @@ export default function Home() {
         className="profile-photo-wrap absolute inset-[5px] overflow-hidden"
         style={{ clipPath: OCTAGON_CLIP }}
       >
-        <img
-          src="https://res.cloudinary.com/gp4dzet9/image/upload/f_auto,q_auto/IMG_0578"
-          alt="RK"
-          className="profile-img relative z-[3] h-full w-full object-cover"
-        />
-        <img
-          src="https://i.pravatar.cc/400?img=13"
-          alt=""
-          aria-hidden="true"
-          className="profile-img-r pointer-events-none absolute inset-0 z-[2] h-full w-full object-cover"
-        />
-        <img
-          src="https://i.pravatar.cc/400?img=13"
-          alt=""
-          aria-hidden="true"
-          className="profile-img-b pointer-events-none absolute inset-0 z-[1] h-full w-full object-cover"
-        />
+       <img
+  src="https://res.cloudinary.com/gp4dzet9/image/upload/f_auto,q_auto,w_400/IMG_0578"
+  alt="RK"
+  className="profile-img relative z-[3] h-full w-full object-cover"
+/>
+{isFinePointer && (
+  <>
+    <img
+      src="https://i.pravatar.cc/400?img=13"
+      alt=""
+      aria-hidden="true"
+      className="profile-img-r pointer-events-none absolute inset-0 z-[2] h-full w-full object-cover"
+    />
+    <img
+      src="https://i.pravatar.cc/400?img=13"
+      alt=""
+      aria-hidden="true"
+      className="profile-img-b pointer-events-none absolute inset-0 z-[1] h-full w-full object-cover"
+    />
+  </>
+)}
         <div className="profile-scan pointer-events-none absolute inset-0 z-[4]" />
       </div>
     </div>
