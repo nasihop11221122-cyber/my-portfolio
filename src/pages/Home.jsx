@@ -1155,30 +1155,30 @@ export default function Home() {
             />
             <div className="project-image-overlay" />
 
-            
-            {project.idx === "ENTRY_01" ? (
-  <a  href={project.link}
-    target="_blank"
-    rel="noopener noreferrer"
-    onClick={(e) => e.stopPropagation()}
-    className="go-live-btn absolute left-1/2 top-1/2 z-10 flex items-center gap-1.5 whitespace-nowrap rounded-full border border-[#3aa0ff] bg-[#050a14]/85 px-3 py-1.5 font-mono text-[10px] font-semibold text-[#3aa0ff] backdrop-blur-sm sm:gap-2 sm:px-4 sm:py-2 sm:text-[11px]"
-  >
-    GO LIVE
-    <ArrowUpRight size={12} />
-  </a>
-) : (
-  <button
-    type="button"
-    onClick={(e) => {
-      e.stopPropagation();
-      setShowLaunchPopup(true);
-    }}
-    className="go-live-btn absolute left-1/2 top-1/2 z-10 flex items-center gap-1.5 whitespace-nowrap rounded-full border border-[#3aa0ff] bg-[#050a14]/85 px-3 py-1.5 font-mono text-[10px] font-semibold text-[#3aa0ff] backdrop-blur-sm sm:gap-2 sm:px-4 sm:py-2 sm:text-[11px]"
-  >
-    GO LIVE
-    <ArrowUpRight size={12} />
-  </button>
-)}
+            {["ENTRY_01", "ENTRY_03"].includes(project.idx) ? (
+              <a
+                href={project.link}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={(e) => e.stopPropagation()}
+                className="go-live-btn absolute left-1/2 top-1/2 z-10 flex items-center gap-1.5 whitespace-nowrap rounded-full border border-[#3aa0ff] bg-[#050a14]/85 px-3 py-1.5 font-mono text-[10px] font-semibold text-[#3aa0ff] backdrop-blur-sm sm:gap-2 sm:px-4 sm:py-2 sm:text-[11px]"
+              >
+                GO LIVE
+                <ArrowUpRight size={12} />
+              </a>
+            ) : (
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setShowLaunchPopup(true);
+                }}
+                className="go-live-btn absolute left-1/2 top-1/2 z-10 flex items-center gap-1.5 whitespace-nowrap rounded-full border border-[#3aa0ff] bg-[#050a14]/85 px-3 py-1.5 font-mono text-[10px] font-semibold text-[#3aa0ff] backdrop-blur-sm sm:gap-2 sm:px-4 sm:py-2 sm:text-[11px]"
+              >
+                GO LIVE
+                <ArrowUpRight size={12} />
+              </button>
+            )}
           </div>
 
           <span className="mb-2 block font-mono text-[10px] text-[#1c6fd1]">
