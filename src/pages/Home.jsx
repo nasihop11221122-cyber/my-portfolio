@@ -97,35 +97,28 @@ const SKILL_GROUPS = [
  
 const TIMELINE = [
   {
-    meta: "01 — MATRICULATION",
-    title: "Educator Public High School, Kakki",
-    body: "Scored 945/1100 marks in Matriculation.",
+    meta: "01 — BS COMPUTER SCIENCE",
+    title: "IMCB-H9, Islamabad",
+    body: "Currently studying for a BS in Computer Science.",
   },
   {
-    meta: "02 — FSC",
-    title: "Shahbudin Degree College, Bakakhel, Bannu",
-    body: "Scored 1043/1200 marks in FSc.",
+    meta: "02 — INTERNSHIP",
+    title: "Full-Stack Web Developer, Sayed Tag Companies",
+    body: "1-year internship — worked on full-stack web development.",
   },
+ 
   {
-    meta: "03 — FRONTEND WEB DEVELOPMENT",
+    meta: "02 — FRONTEND WEB DEVELOPMENT",
     title: "Sayed Software Institute, Bannu",
     body: "Completed a course in Frontend Web Development.",
   },
   {
-    meta: "04 — BACKEND WEB DEVELOPMENT",
+    meta: "03 — BACKEND WEB DEVELOPMENT",
     title: "SSI, Bannu",
     body: "Completed a course in Backend Web Development.",
   },
-  {
-    meta: "05 — INTERNSHIP",
-    title: "Full-Stack Web Developer, Sayed Tag Companies",
-    body: "3-month internship — worked on full-stack web development.",
-  },
-  {
-    meta: "06 — BS COMPUTER SCIENCE",
-    title: "IMCB-H9, Islamabad",
-    body: "Currently studying for a BS in Computer Science.",
-  },
+  
+  
 ];
 
 const PROJECTS = [
@@ -163,7 +156,7 @@ const PROJECTS = [
       "Replaced roughly 30,000 lines of ad-hoc CSS with a shared component library, cutting new-feature styling time by half and eliminating an entire class of visual regressions across the product.",
     tags: ["react", "MongoDB", "Node.js","tailwind css", "Express","framer motion"],
          image: "https://res.cloudinary.com/gp4dzet9/image/upload/f_auto,q_auto,w_700/v1789922637/d7a12d0a-e181-4d07-83ea-b097165776b3_1.png",
-    link: "#",
+    link: "https://smart-attandance01.vercel.app/",
   },
   
 ];
