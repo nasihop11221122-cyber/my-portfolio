@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import emailjs from "@emailjs/browser";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, useScroll, useSpring, useTransform } from "framer-motion";
 import * as THREE from "three";
 
 import {
@@ -15,6 +15,7 @@ import {
   MessageCircle,
   Video,
   Sparkles,
+  Zap,
 } from "lucide-react";
 
 import {
@@ -253,6 +254,25 @@ export default function Home() {
   const rootRef = useRef(null);
   const canvasRef = useRef(null);
   const coinContainerRef = useRef(null);
+  const timelineContainerRef = useRef(null);
+
+  /* Scroll-linked dynamic electric wire extension for My Journey timeline */
+  const { scrollYProgress: timelineProgress } = useScroll({
+    target: timelineContainerRef,
+    offset: ["start 65%", "end 75%"],
+  });
+  const timelineWireScale = useSpring(timelineProgress, {
+    stiffness: 90,
+    damping: 24,
+    restDelta: 0.001,
+  });
+  const sparkTipTop = useTransform(
+    timelineWireScale,
+    (val) => `${Math.min(Math.max(val, 0) * 100, 100)}%`
+  );
+  const sparkTipOpacity = useTransform(timelineWireScale, (val) =>
+    val > 0.03 && val < 0.99 ? 1 : 0
+  );
 
   const [openProject, setOpenProject] = useState(null);
   const [openFaq, setOpenFaq] = useState(null);
@@ -1256,22 +1276,228 @@ export default function Home() {
               </p>
             </Reveal>
 
-            <div className="relative max-w-3xl pl-6 sm:pl-8">
-              <div className="absolute bottom-2 left-2 top-2 w-px bg-[var(--border-strong)] sm:left-2.5" />
-              <StaggerContainer staggerChildren={0.12}>
+            <div ref={timelineContainerRef} className="relative max-w-3xl pl-10 sm:pl-14">
+              {/* Background Guide Wire Base Track */}
+              <div className="absolute bottom-4 left-[18px] top-4 z-0 w-[2px] -translate-x-1/2 rounded-full bg-[var(--border-subtle)] opacity-40 sm:left-[24px]" />
+
+              {/* 1. Atmospheric Electric Glow Aura extending along with scroll */}
+              <motion.div
+                style={{
+                  scaleY: timelineWireScale,
+                  transformOrigin: "top",
+                  boxShadow:
+                    "0 0 8px rgba(0, 216, 255, 0.7), 0 0 18px rgba(8, 126, 156, 0.4)",
+                }}
+                className="pointer-events-none absolute bottom-4 left-[18px] top-4 z-0 w-[3px] -translate-x-1/2 rounded-full sm:left-[24px]"
+              />
+
+              {/* 2. Physical Live High-Voltage Cable extending downwards on scroll */}
+              <motion.div
+                style={{ scaleY: timelineWireScale, transformOrigin: "top" }}
+                className="absolute bottom-4 left-[18px] top-4 z-0 w-[3px] -translate-x-1/2 overflow-hidden rounded-full sm:left-[24px]"
+              >
+                {/* Static Cyan/Deep-Teal Electric Conductor Base */}
+                <div className="absolute inset-0 w-full bg-gradient-to-b from-[#087e9c] via-[#00d8ff] to-[#087e9c] opacity-90" />
+
+                {/* Central White-Hot Filament Wire */}
+                <div className="absolute inset-y-0 left-1/2 w-[1px] -translate-x-1/2 bg-white/95 shadow-[0_0_3px_#ffffff]" />
+
+                {/* Primary Travelling High-Voltage Lightning Bolt */}
+                <motion.div
+                  animate={{ y: ["-100%", "360%"] }}
+                  transition={{
+                    duration: 2.1,
+                    repeat: Infinity,
+                    ease: "linear",
+                  }}
+                  className="absolute -top-32 left-0 h-52 w-full bg-gradient-to-b from-transparent via-[#ffffff] to-transparent shadow-[0_0_8px_#ffffff,0_0_16px_#00f0ff]"
+                />
+
+                {/* Secondary Fast Cyan Tracer Surge */}
+                <motion.div
+                  animate={{ y: ["-100%", "360%"] }}
+                  transition={{
+                    duration: 1.4,
+                    repeat: Infinity,
+                    delay: 0.75,
+                    ease: "linear",
+                  }}
+                  className="absolute -top-20 left-0 h-28 w-full bg-gradient-to-b from-transparent via-[#00f0ff] to-transparent opacity-95 shadow-[0_0_7px_#00f0ff]"
+                />
+
+                {/* Tertiary Micro Electric Spark Beads */}
+                <motion.div
+                  animate={{ y: ["-100%", "360%"] }}
+                  transition={{
+                    duration: 0.95,
+                    repeat: Infinity,
+                    delay: 1.3,
+                    ease: "linear",
+                  }}
+                  className="absolute -top-12 left-0 h-16 w-full bg-gradient-to-b from-transparent via-white to-transparent opacity-90 shadow-[0_0_6px_#ffffff]"
+                />
+              </motion.div>
+
+              {/* 3. Leading Electric Spark Head riding the extending wire tip */}
+              <motion.div
+                style={{
+                  top: sparkTipTop,
+                  opacity: sparkTipOpacity,
+                }}
+                className="pointer-events-none absolute left-[18px] z-20 -translate-x-1/2 -translate-y-1/2 sm:left-[24px]"
+              >
+                <motion.div
+                  animate={{
+                    scale: [1, 1.4, 1],
+                    rotate: [0, 90, 180, 270, 360],
+                  }}
+                  transition={{
+                    duration: 0.5,
+                    repeat: Infinity,
+                    ease: "linear",
+                  }}
+                  className="relative flex items-center justify-center text-white"
+                >
+                  <Zap size={16} className="fill-white text-[#00f0ff] drop-shadow-[0_0_6px_#ffffff,0_0_12px_#00f0ff]" />
+                </motion.div>
+                <div className="absolute -inset-1 rounded-full bg-[#00f0ff]/45 blur-[2px]" />
+              </motion.div>
+
+              {/* 4. Sequential Milestones Revealing Point-by-Point on Scroll (whileInView) */}
+              <div className="flex flex-col">
                 {TIMELINE.map((item, i) => (
                   <motion.div
                     key={item.title}
-                    variants={fadeUp}
+                    initial="hidden"
+                    whileInView="visible"
+                    viewport={{ once: true, amount: 0.35, margin: "-30px 0px" }}
+                    variants={{
+                      hidden: { opacity: 0, y: 35 },
+                      visible: {
+                        opacity: 1,
+                        y: 0,
+                        transition: {
+                          duration: 0.6,
+                          ease: [0.22, 1, 0.36, 1],
+                        },
+                      },
+                    }}
                     className={`relative ${i === TIMELINE.length - 1 ? "" : "pb-12 sm:pb-16"}`}
                   >
-                    <span
-                      className="absolute -left-6 top-1 h-3.5 w-3.5 rounded-full bg-[var(--accent)] ring-4 ring-[var(--bg-light)] sm:-left-8"
-                      style={{
-                        boxShadow: "0 0 0 1px var(--border-strong)",
+                    {/* Horizontal Electric Power Feeder Bridge (Connecting Wire to Card) */}
+                    <motion.div
+                      variants={{
+                        hidden: { scaleX: 0, opacity: 0 },
+                        visible: {
+                          scaleX: 1,
+                          opacity: 1,
+                          transition: {
+                            duration: 0.45,
+                            delay: 0.15,
+                            ease: "easeOut",
+                          },
+                        },
                       }}
-                    />
-                    <div className="electric-card rounded-2xl border border-[var(--border-subtle)] p-5 sm:p-6">
+                      style={{ transformOrigin: "left" }}
+                      className="pointer-events-none absolute -left-[22px] top-7 z-10 h-[2px] w-[22px] overflow-hidden bg-gradient-to-r from-[#00d8ff] via-[#38bdf8] to-[rgba(0,216,255,0.35)] shadow-[0_0_5px_#00f0ff] sm:-left-[32px] sm:w-[32px]"
+                    >
+                      {/* Horizontal travelling electric pulse shooting directly into the card */}
+                      <motion.div
+                        animate={{ x: ["-100%", "150%"] }}
+                        transition={{
+                          duration: 1.3,
+                          repeat: Infinity,
+                          delay: i * 0.32,
+                          ease: "linear",
+                        }}
+                        className="h-full w-4 bg-white shadow-[0_0_6px_#ffffff]"
+                      />
+                    </motion.div>
+
+                    {/* Electric Terminal Junction Node */}
+                    <motion.div
+                      variants={{
+                        hidden: { scale: 0, opacity: 0 },
+                        visible: {
+                          scale: 1,
+                          opacity: 1,
+                          transition: {
+                            type: "spring",
+                            stiffness: 280,
+                            damping: 18,
+                          },
+                        },
+                      }}
+                      className="pointer-events-none absolute -left-[22px] top-7 z-20 flex -translate-x-1/2 -translate-y-1/2 items-center justify-center sm:-left-[32px]"
+                    >
+                      {/* Pulsing Electric Halo Shockwave */}
+                      <motion.span
+                        animate={{
+                          scale: [1, 2.1, 1],
+                          opacity: [0.55, 0, 0.55],
+                        }}
+                        transition={{
+                          duration: 1.9,
+                          repeat: Infinity,
+                          delay: i * 0.35,
+                          ease: "easeOut",
+                        }}
+                        className="absolute -inset-2 rounded-full border border-[#00f0ff] bg-[#00f0ff]/20 blur-[1px]"
+                      />
+
+                      {/* Outer Terminal Metal & Neon Ring */}
+                      <span className="relative flex h-5 w-5 items-center justify-center rounded-full border-2 border-[#00f0ff] bg-[#0a1e2b] shadow-[0_0_8px_#00f0ff,inset_0_0_4px_#00d8ff]">
+                        {/* White-Hot Electric Core Spark */}
+                        <motion.span
+                          animate={{
+                            scale: [0.85, 1.3, 0.85],
+                            opacity: [0.85, 1, 0.85],
+                          }}
+                          transition={{
+                            duration: 1.2,
+                            repeat: Infinity,
+                            delay: i * 0.25,
+                            ease: "easeInOut",
+                          }}
+                          className="h-2 w-2 rounded-full bg-white shadow-[0_0_6px_#ffffff,0_0_10px_#00f0ff]"
+                        />
+                      </span>
+
+                      {/* Crackling Electric Micro-Sparks around Terminal */}
+                      <motion.span
+                        animate={{
+                          rotate: [0, 90, 180, 270, 360],
+                          scale: [0.7, 1.15, 0.75, 1.2, 0.7],
+                          opacity: [0.25, 0.95, 0.2, 1, 0.25],
+                        }}
+                        transition={{
+                          duration: 1.6,
+                          repeat: Infinity,
+                          delay: i * 0.38,
+                          ease: "linear",
+                        }}
+                        className="pointer-events-none absolute -inset-1.5 flex items-center justify-center text-[#00f0ff]"
+                      >
+                        <Zap size={14} className="fill-[#00f0ff] drop-shadow-[0_0_6px_#00f0ff]" />
+                      </motion.span>
+                    </motion.div>
+
+                    {/* Milestone Card with Electric Border */}
+                    <motion.div
+                      variants={{
+                        hidden: { opacity: 0, x: 25 },
+                        visible: {
+                          opacity: 1,
+                          x: 0,
+                          transition: {
+                            duration: 0.55,
+                            delay: 0.1,
+                            ease: [0.22, 1, 0.36, 1],
+                          },
+                        },
+                      }}
+                      className="electric-card rounded-2xl border border-[var(--border-subtle)] p-5 sm:p-6"
+                    >
                       <div className="mb-2 font-mono text-xs font-semibold text-[var(--accent)]">
                         {item.meta}
                       </div>
@@ -1281,10 +1507,10 @@ export default function Home() {
                       <p className="text-sm leading-relaxed text-[var(--text-muted)]">
                         {item.body}
                       </p>
-                    </div>
+                    </motion.div>
                   </motion.div>
                 ))}
-              </StaggerContainer>
+              </div>
             </div>
           </div>
         </section>
