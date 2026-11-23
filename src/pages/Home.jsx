@@ -961,6 +961,12 @@ export default function Home() {
               onMouseEnter={() => setIsPhotoHovered(true)}
               onMouseLeave={() => setIsPhotoHovered(false)}
               className="relative mx-auto h-72 w-56 flex-shrink-0 cursor-pointer xs:h-80 xs:w-64 sm:h-96 sm:w-72 lg:mx-0 lg:ml-auto lg:h-[26rem] lg:w-80 select-none group"
+              style={{
+                filter: isPhotoHovered
+                  ? "drop-shadow(0 0 28px rgba(0, 240, 255, 0.55))"
+                  : "drop-shadow(0 0 16px rgba(8, 126, 156, 0.3))",
+                transition: "filter 0.3s ease",
+              }}
             >
               {/* Electric spark canvas leaping outside the border on hover */}
               <canvas
@@ -969,11 +975,15 @@ export default function Home() {
               />
 
               <div
-                className="relative h-full w-full overflow-hidden p-[3.5px] transition-all duration-300 group-hover:shadow-[0_0_36px_rgba(0,240,255,0.6)]"
+                className="relative h-full w-full p-[3.5px] transition-all duration-300"
                 style={{
                   clipPath: OCTAGON_CLIP,
+                  WebkitClipPath: OCTAGON_CLIP,
                   backgroundColor: "rgba(8, 126, 156, 0.25)",
-                  boxShadow: "0 0 24px -2px rgba(0, 240, 255, 0.35)",
+                  transform: "translateZ(0)",
+                  WebkitBackfaceVisibility: "hidden",
+                  backfaceVisibility: "hidden",
+                  willChange: "transform, clip-path",
                 }}
               >
                 {/* Flowing electric current arc (White lightning core + electric cyan aura) */}
@@ -1008,8 +1018,15 @@ export default function Home() {
 
                 {/* Inner Octagon container with photo */}
                 <div
-                  className="profile-photo-wrap relative h-full w-full overflow-hidden bg-[var(--bg-surface)]"
-                  style={{ clipPath: OCTAGON_CLIP }}
+                  className="profile-photo-wrap relative h-full w-full bg-[var(--bg-surface)]"
+                  style={{
+                    clipPath: OCTAGON_CLIP,
+                    WebkitClipPath: OCTAGON_CLIP,
+                    transform: "translateZ(0)",
+                    WebkitBackfaceVisibility: "hidden",
+                    backfaceVisibility: "hidden",
+                    willChange: "transform, clip-path",
+                  }}
                 >
                   <img
                     src="https://res.cloudinary.com/gp4dzet9/image/upload/f_auto,q_auto,w_400/IMG_0578"
